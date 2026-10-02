@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Atria — AI 沙盒涌现观察站
 
 > 25 个 AI 居民生活在一个像素小镇上。一桩「邮局包裹错领」事件自然发生、自然传播、自然误解——**没有一行剧本，全部是运行结果**。
@@ -85,3 +86,7 @@ RAG 在「事实回忆」上同样答对（前四轮实验证伪了「RAG 会断
 - 图素：[Kenney Roguelike RPG Pack](https://kenney.nl/assets/roguelike-rpg-pack)（**CC0**）、角色精灵为程序化生成
 - 思想来源（不复现，只融合其机制）：[Smallville / Generative Agents](https://github.com/joonspk-research/generative_agents)、[AI Town](https://github.com/a16z-infra/ai-town)、[AgentSociety](https://github.com/agent-society/agentsociety)
 - **不包含**任何 Smallville 付费图素（Cute RPG World $40 包）；渲染演示中使用的付费包画面仅用于视频，不入仓库
+=======
+# new-project
+新建仓库 - 用途待定
+>>>>>>> origin/main

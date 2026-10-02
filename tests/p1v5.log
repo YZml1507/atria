@@ -1,0 +1,20 @@
+老王可用噪声: 88 条
+总记忆: 6304 条
+top-30 覆盖率: 0.48%
+
+=== P1v5: 并行发起两个调用 ===
+墙钟 23s
+
+[A 全量窗口] 23s
+  usage: {'prompt_tokens': 138454, 'total_tokens': 138619, 'completion_tokens': 165, 'prompt_tokens_details': {'cached_tokens': 0, 'created_cache_tokens': 138432, 'multimodal_tokens': None}, 'completion_tokens_details': {'reasoning_tokens': 134}}
+  回答: '灰色的，一件灰色粗呢外套——那天我亲眼在邮局门口看见的，后来别人传的黑的蓝的都不对。'
+
+[B RAG top-30] 2s
+  usage: {'prompt_tokens': 830, 'total_tokens': 951, 'completion_tokens': 121, 'prompt_tokens_details': {'cached_tokens': 128, 'created_cache_tokens': 640, 'multimodal_tokens': None}, 'completion_tokens_details': {'reasoning_tokens': 111}}
+  回答: '那人穿的是灰色粗呢外套。'
+
+=== 判据完整性判分 ===
+全量: 3/3  ['答案=灰', '指出矛盾/来源', '分辨一手vs转述']
+RAG : 1/3  ['答案=灰']
+>>> 结论: 卖点成立(全量分辨传言变异)
+结果已存 /home/ubuntu/p1v5_result.json

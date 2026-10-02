@@ -1,0 +1,14 @@
+{
+ "n_memory": 6304,
+ "ans_full": null,
+ "ans_rag": "那个人穿的是灰色粗呢外套。",
+ "score_full": 0,
+ "score_rag": 2,
+ "verdict": "全量也失败-需查",
+ "stats": {
+  "calls": 0,
+  "ok": 0,
+  "r429": 0,
+  "err": 0
+ }
+}

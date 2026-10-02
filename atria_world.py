@@ -2,7 +2,7 @@
 25 人镇: 40x30=1200 格 / 12 地点 / ~45 物品 / 25 出生点
 每个地点一个矩形区域 + 物品列表。碰撞用格级通行表。
 """
-import json
+import json, os
 
 GRID_W, GRID_H = 40, 30
 
@@ -163,5 +163,5 @@ if __name__ == "__main__":
     # 所有出生点连通性
     bad = [a for a,p in w.spawn.items() if not w.is_walkable(*p)]
     print("出生点不可通行:", bad if bad else "无")
-    json.dump(w.to_json(), open("/home/ubuntu/atria_world.json","w"), ensure_ascii=False, indent=1)
-    print("世界已存 /home/ubuntu/atria_world.json")
+    json.dump(w.to_json(), open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "atria_world.json"),"w"), ensure_ascii=False, indent=1)
+    print("世界已存 atri­a_world.json")

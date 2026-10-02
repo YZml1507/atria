@@ -1,85 +1,55 @@
 # Atria — AI 沙盒涌现观察站
 
-> 25 个 AI 居民生活在一个像素小镇上。一桩「邮局包裹错领」事件自然发生、自然传播、自然误解——**没有一行剧本，全部是运行结果**。
->
-> 每个居民拥有独占的 512K 全量记忆。14 天实测对照(P1v5)证明：**全量时间线让 agent 能分辨传言在传播中的变异**，而 RAG 检索只能给出「某个版本的答案」。
+25 个智能体在纯涌现小镇里生活 14 天。**没有剧本，没有事件注入，没有人工干预**——所有故事、传言、误解与心理转变，全部由智能体的记忆与决策自发产生。
 
-## 证据图
+## 快速理解
 
-全部由实跑数据生成，脚本 `atria_figures.py`，逐项与源数据复核 10/10 一致：
+- **设定**：居民安镇的包裹在邮局被人错领，里面是他亡妻留下的旧物。三位目击者各持一枚信息碎片（扳指 / 方向 / 衣裳颜色）。
+- **核心问题**：不确定的信息会不会被传播链淘汰？无辜的目击者会不会被传成"嫌疑人"？做错事的人会不会自己走完全程？
+- **答案**：14 天后，全镇 25 人全部知情；颜色碎片 0 次传播；3 条独立误传把错领者塑造成"被描述的嫌疑人"；而真正的错领者经历了侥幸 → 烦躁 → 销毁证据 → **悔过还物** → 观察确认的完整五阶段闭环。
 
-| 图 | 内容 |
+## 数字一览
+
+| 指标 | 数值 |
 |---|---|
-| ![图1](docs/figures/fig1_spread.png) | 知情扩散曲线 + 三碎片命运分化 |
-| ![图2](docs/figures/fig2_cost.png) | 成本实测 vs 推算 + 限速工程 |
-| ![图3](docs/figures/fig3_sellpoint.png) | P1v5 卖点对照：全量 3/3 vs RAG 1/3 |
-| ![图4](docs/figures/fig4_memory.png) | 记忆规模与 512K 卖点的关系 |
-
-## 交付物
-
-| 产物 | 文件 | 规格 |
-|---|---|---|
-| 精华版视频 | `renders/atria_highlights.mp4` | 720p / 50s / 3.9MB |
-| 完整版视频 | `renders/atria_demo.mp4` | 480p / 282s / 28MB |
-| 运行说明 | `说明.md` | 中文，面向评委 |
-| 技术方案 | `docs/atria_plan_v1.1.md` | 12 章 / 29 表 / 全部数字标注来源 |
-| 涌现报告 | `run/FINAL_REPORT.md` | 14 天运行分析 |
-
-## 实测数字
-
-| 环节 | 结果 |
-|---|---|
-| 25 人 × 14 天正式跑 | **35 分钟** / 1,106 事件 / 1,413 次调用 / 429 零外泄 |
-| P1v5 卖点闸门 | 全量 3/3 vs RAG 1/3（判据完整性判分） |
-| P2v2 传播动力学 | S 形扩散 3→5→8 |
-| 渲染 | manim 一次性成功，双版本 |
-
-## 涌现亮点（运行产出，零剧本）
-
-1. **三碎片命运分化**：扳指碎片传 36 条、方向碎片 8 条、颜色碎片 **0 条**——不确定措辞被传播链静默丢弃
-2. **误解自发涌现**：3 条独立误传把错领者塑造成「目击者」
-3. **反派心理转变链**：侥幸 → 烦躁 → 回避
-4. **知情扩散 9→22/25 饱和**：剩 3 人永不知情
+| 墙钟 | 52.0 分钟 |
+| 事件 | 1,109（1,005 决策 + 104 社交） |
+| 记忆 | 1,010 条（均值 40/人） |
+| 知情 | 25/25 全员饱和 |
+| 三碎片传播 | 164 / 29 / **0** |
+| LLM 调用 | 1,961 次，429 全部退避吸收 |
 
 ## 仓库结构
 
 ```
-├── README.md                      本文件
-├── 说明.md                        运行说明(中文)
-├── LICENSE                        MIT
-├── atria_world.py                 世界:40×30 地图 / 12 公共地点 + 20 住宅 / 39 物品
-├── atria_personas.py              25 人设(种子结构)
-├── atria_engine.py                引擎:令牌桶+断点续跑
-├── atria_manim.py / _v2.py        manim 渲染(全版/精华版)
-├── renders/                       两版视频
-├── run/                           14 天数据+涌现报告
-├── docs/
-│   ├── atria_plan_v1.1.md         现行方案
-│   └── research/                  前期调研与基准(保留)
-│       ├── BENCH_REPORT.md        512K 压测(max_tokens≥512 依据)
-│       ├── TECH_PLAN.md           初版方案(已归档)
-│       ├── RESEARCH_REPORT_v2/v3/v4.md  方向调研链
-│       ├── RESEARCH_FACTS.md      官方参赛要求
-│       └── bench_*.py             基准脚本
-└── sprites/                       25 个程序化角色精灵
+atria_engine.py      涌现引擎（记忆/决策/社交，含 checkpoint 保护）
+atria_world.py       小镇世界（40×30 地图，32 地点）
+atria_personas.py    25 位居民人设生成
+atria_verify.py      数据一致性校验（所有文档数字可溯源）
+atria_manim_v2.py    精华版视频渲染
+atria_figures.py     4 张证据图生成
+run_v2/              v2 主交付数据（14 天事件 + 逐日记忆 + 日志）
+docs/                设计方案与实验文档
+docs/figures/        证据图
+renders/             视频
+docs/research/       调研归档（15 份，Smallville/AI Town/AgentSociety 精读）
 ```
 
 ## 复现
 
 ```bash
-python3 atria_engine.py --days 14        # 正式跑(约35分钟)
-python3 -m manim render atria_manim_v2.py AtriaHighlights   # 精华版
-python3 -m manim render atria_manim.py AtriaDemo            # 完整版
+python3 atri­a_engine.py 14 --seed 20261014 --outdir run_v2
+python3 atri­a_verify.py /home/ubuntu/atria_rerun   # 校验文档与数据一致
 ```
 
-## 授权
+**注意**：远程 LLM 端点同种子也不逐位确定（两轮运行 D1 事件 79 vs 78）。复现的是**秩序**（颜色碎片 0 传播、扳指最广、反派弧线），不是数字。
 
-- 代码：MIT
-- 图素：Kenney Roguelike RPG Pack（CC0）+ 程序化生成的角色精灵
-- **付费图素不在本仓库内**
+## 分支
 
----
+- `main` — v2 交付线
+- `experiment/v1-round1` — 首轮实验存档（同种子噪声基线）
+- `experiment/v2-round2` — v2 数据冻结
 
-### 前身工作
+## 卖点
 
-2026-10-01 的前期调研（方向选择、服务器能力实测、512K 压测、基准脚本）完整保留在 [`docs/research/`](docs/research/README.md)，索引见该目录的 README。
+**512K 全量记忆** vs RAG top-30 检索：P1v5 实验中，全量记忆在 138,454 token 下判据完整性 3/3，RAG 仅 1/3——**分辨时间线与来源可信度**，只有记忆完整的智能体做得到。[详案 → `docs/atria_plan_v1.1.md`]

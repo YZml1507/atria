@@ -1,0 +1,9 @@
+# 原始图素(授权风险, 不入仓库)
+assets_kenney/
+*.kenney.*
+# 运行时产物
+media/
+__pycache__/
+*.pyc
+# 大文件可选
+# renders/atria_demo.mp4

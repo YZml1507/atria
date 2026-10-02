@@ -71,4 +71,4 @@ python3 -m manim render atria_manim.py AtriaDemo            # 完整版
 
 ### 前身工作
 
-本仓库由 `new-project` 改名而来。2026-10-01 的前期调研（方向选择、服务器能力实测、512K 压测、基准脚本）完整保留在 [`docs/research/`](docs/research/README.md)，索引见该目录的 README。
+2026-10-01 的前期调研（方向选择、服务器能力实测、512K 压测、基准脚本）完整保留在 [`docs/research/`](docs/research/README.md)，索引见该目录的 README。

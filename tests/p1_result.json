@@ -1,0 +1,348 @@
+{
+ "stats": {
+  "calls": 10,
+  "ok": 0,
+  "r429": 103,
+  "err": 10
+ },
+ "wall_s": 225.56845092773438,
+ "ans_full": "那人穿灰色粗呢外套，抱着旧纸箱朝镇子东头的五金店方向走了。",
+ "ans_rag": "那人穿一件灰色粗呢外套，抱着纸箱朝镇子东头的五金店方向走了。",
+ "score_full": 2,
+ "score_rag": 2,
+ "n_memory": 83,
+ "laowang_memory": [
+  [
+   1,
+   "老王 is idle at the 办公桌"
+  ],
+  [
+   1,
+   "老王 is idle at the 办公桌"
+  ],
+  [
+   1,
+   "老王 is idle at the 办公桌"
+  ],
+  [
+   1,
+   "老王 正在 办公桌 旁发呆"
+  ],
+  [
+   1,
+   "老王 正在 办公桌 旁发呆"
+  ],
+  [
+   1,
+   "老王 is idle at the 办公桌"
+  ],
+  [
+   1,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   1,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   1,
+   "老王 在 镇公所 的 办公室 老王每天在镇上散步。 🚶‍♂️🏛️"
+  ],
+  [
+   1,
+   "老王 在 镇公所 的 办公室 老王每天在镇上散步。 🚶‍♂️🏛️"
+  ],
+  [
+   1,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶‍♂️☕"
+  ],
+  [
+   1,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶"
+  ],
+  [
+   2,
+   "老王在邮局门口晒太阳时看见: 一个人从邮局柜台取走一只用胶带缠了好几道的旧纸箱, 那人穿一件灰色粗呢外套, 抱着纸箱朝镇子东头的五金店方向走了。"
+  ],
+  [
+   2,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   2,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   2,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   2,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   2,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   2,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   2,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶‍♂️☕"
+  ],
+  [
+   3,
+   "老王跟周老师聊天时提到: 前天邮局那个人穿的不是常见的黑外套, 颜色偏浅。"
+  ],
+  [
+   3,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   3,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   3,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   3,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   3,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   3,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   3,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   4,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   4,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   4,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   4,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   4,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   4,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   4,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶‍♂️☕"
+  ],
+  [
+   5,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   5,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   5,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   5,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   5,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   5,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶‍♂️☕"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   5,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   6,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   6,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   6,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   6,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   6,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   6,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   6,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   6,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   6,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶☕"
+  ],
+  [
+   7,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   7,
+   "老王 正在 cafe customer seating 旁发呆"
+  ],
+  [
+   7,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   7,
+   "老王 is idle at the cafe customer seating"
+  ],
+  [
+   7,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   7,
+   "老王 擦了擦 cafe customer seating"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 🚶‍♂️☕"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶‍♂️"
+  ],
+  [
+   7,
+   "老王 在 Hobbs Cafe 的 cafe 老王每天在镇上散步。 ☕🚶"
+  ]
+ ]
+}

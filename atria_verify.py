@@ -17,14 +17,12 @@ def load_facts(run_dir="/home/ubuntu/atria_rerun"):
     F["记忆总条数"] = sum(len(v) for v in mem.values())
     F["记忆均值"] = F["记忆总条数"] // len(mem)
 
-    # 碎片: 双口径都记录, 文档用哪个都行但必须统一
-    holders = {"扳指": "李大姐", "东头": "赵医生", "浅灰": "周老师"}
-    for kw, holder in holders.items():
-        total = sum(1 for p, v in mem.items() for r in v if kw in str(r))
-        own = sum(1 for r in mem[holder] if kw in str(r))
-        F[f"碎片-{kw}-总"] = total
-        F[f"碎片-{kw}-含持有者"] = own
-        F[f"碎片-{kw}-传播"] = total - own
+    # 碎片: 锁定口径 (atria_fragments.py), 区分碎片转述与地名日常提及
+    import importlib.util as _ilu
+    _spec = _ilu.spec_from_file_location("af", os.path.join(os.path.dirname(os.path.abspath(__file__)), "atria_fragments.py"))
+    _af = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_af)
+    _out, _facts = _af.main(run_dir, verbose=False)
+    F.update(_facts)
 
     # 永不知情
     F["永不知情"] = len([p for p, v in mem.items()
@@ -57,6 +55,8 @@ def check_docs(facts, repo="/home/ubuntu/atria_repo"):
         (r"104\s*社交", 104, "社交事件"),
         (r"剩余\s*(\d+)\s*人始终不知情", facts["永不知情"], "永不知情人数"),
         (r"(\d+)/25\s*饱和", facts["知情终点"], "知情终点"),
+        (r"方向碎片[^\n]{0,30}?(\d+)\s*条", facts["碎片-方向-传播"], "方向碎片传播数"),
+        (r"扳指[^\n]{0,20}?(\d+)\s*条传播", facts["碎片-扳指-传播"], "扳指碎片传播数"),
     ]
     for p in docs:
         t = open(p, encoding="utf-8").read()

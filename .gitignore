@@ -7,3 +7,7 @@ __pycache__/
 *.pyc
 # 大文件可选
 # renders/atria_demo.mp4
+
+# 本地凭据, 严禁入仓
+.github_token
+*.token

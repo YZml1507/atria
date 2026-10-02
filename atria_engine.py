@@ -11,7 +11,7 @@
 import json, urllib.request, time, subprocess, os, re, threading, random, sys
 from collections import deque, defaultdict
 from concurrent.futures import ThreadPoolExecutor
-sys.path.insert(0, "/home/ubuntu")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atria_world import World
 
 KEY = subprocess.run(
@@ -215,28 +215,39 @@ def move_toward(agent, world, target_place):
 def main():
     DAYS = 14
     start_day = 1
-    if len(sys.argv) > 1 and sys.argv[1] == "--start":
-        start_day = int(sys.argv[2])
-        if len(sys.argv) > 3:
-            DAYS = int(sys.argv[3])
-    elif len(sys.argv) > 1 and sys.argv[1].isdigit():
-        DAYS = int(sys.argv[1])
-    rng = random.Random(20261014)
+    seed = 20261014
+    HERE = os.path.dirname(os.path.abspath(__file__))
+    outdir = os.environ.get("ATRIA_OUT", os.path.join(HERE, "run"))
+    # 用法: atri­a_engine.py [days] [--seed N] [--outdir DIR] [--start D N]
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a == "--start" and i + 2 < len(args):
+            start_day = int(args[i+1]); DAYS = int(args[i+2]); i += 3
+        elif a == "--seed" and i + 1 < len(args):
+            seed = int(args[i+1]); i += 2
+        elif a == "--outdir" and i + 1 < len(args):
+            outdir = args[i+1]; i += 2
+        elif a.isdigit():
+            DAYS = int(a); i += 1
+        else:
+            i += 1
+    rng = random.Random(seed)
     world = World()
-    scratches = json.load(open("/home/ubuntu/atria_personas.json"))
+    scratches = json.load(open(os.path.join(HERE, "atria_personas.json")))
     agents = [Agent(s, world) for s in scratches]
     # 断点续跑: 载入前一天的记忆
     if start_day > 1:
-        ck = f"/home/ubuntu/atria_run/mem_day{start_day-1:02d}.json"
+        ck = os.path.join(outdir, f"mem_day{start_day-1:02d}.json")
         if os.path.exists(ck):
             saved = json.load(open(ck))
             for a in agents:
                 for rec in saved.get(a.name, []):
                     a.mem.records.append(tuple(rec))
             print(f"从第{start_day}天续跑: 已载入 {ck}")
-    print(f"引擎启动: {len(agents)} 人 x {DAYS} 天(从第{start_day}天起), {STEPS_PER_DAY} 步/日, 决策步 {DECISION_STEPS}, 社交步 {SOCIAL_STEP}", flush=True)
+    print(f"引擎启动: 25 人 x {DAYS} 天(从第{start_day}天起), 48 步/日, 决策步 {DECISION_STEPS}, 社交步 {SOCIAL_STEP}, seed={seed}, outdir={outdir}", flush=True)
 
-    outdir = "/home/ubuntu/atria_run"
     os.makedirs(outdir, exist_ok=True)
     events = []
 

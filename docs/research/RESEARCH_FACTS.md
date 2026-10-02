@@ -36,7 +36,7 @@
 - Atria API 可调通（discovery-api.intern-ai.org.cn，回显 Atria-Dawn）
 - akshare 0.1秒拉真实A股日线（平安银行 57根K线）
 - manim 渲染通过（HelloCube.mp4，ffmpeg可用）
-- Python 3.12 venv 在 /home/ubuntu/new-project/.venv
+- Python 3.12 venv 在 /home/ubuntu/atria/.venv
 - 本机无A股历史数据（research-finai那批已删除）
 
 ## 外部调研补充

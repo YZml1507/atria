@@ -1,6 +1,6 @@
 """模拟 32 智能体沙盒在内存中能占多少"""
 import os, sys, tracemalloc
-sys.path.insert(0, '/home/ubuntu/new-project')
+sys.path.insert(0, '/home/ubuntu/atria')
 
 # 模拟一个智能体的状态（memory stream 风格，最占内存的部件）
 class Agent:

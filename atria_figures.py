@@ -75,11 +75,14 @@ def fig1():
     ax1.fill_between(xs, ys, color=C["blue"], alpha=0.10)
     ax1.axhline(25, color=C["grey"], ls="--", lw=1.2)
     ax1.text(13.6, 23.6, "全镇 25 人", fontsize=9, color=C["grey"])
-    ax1.annotate(f"饱和于 {ys[-1]}/25\n5 名中性居民永不知情",
-                 xy=(12, ys[-1]), xytext=(8.5, 13.5), fontsize=9.5,
+    ax1.annotate(f"饱和于 {ys[-1]}/25\n3 名中性居民永不知情",
+                 xy=(12, ys[-1]), xytext=(8.2, 13), fontsize=9.5,
                  arrowprops=dict(arrowstyle="->", color=C["ink"], lw=1))
     ax1.annotate("第2天引爆\n(错领事件)", xy=(2, ys[1]), xytext=(2.6, 4.5), fontsize=9.5,
                  arrowprops=dict(arrowstyle="->", color=C["red"], lw=1.2))
+    # 口径切换标记
+    ax1.axvline(4.5, color=C["grey"], ls=":", lw=1.5)
+    ax1.text(4.7, 2.5, "← 事件口径 | 记忆口径 →", fontsize=8, color=C["grey"])
     for x,y in zip(xs,ys):
         if x in (1,4,14): ax1.annotate(str(y), (x,y), textcoords="offset points", xytext=(0,8), fontsize=9, ha="center")
     ax1.set_xlabel("游戏日", fontsize=11); ax1.set_ylabel("知情人数", fontsize=11)
@@ -87,14 +90,14 @@ def fig1():
     ax1.set_title("a. 知情扩散曲线(记忆流实测, 非统计推断)", fontsize=12, fontweight="bold")
 
     # 右: 三碎片条形
-    frags = [("扳指碎片\n(具体·可验证)", 40, 6, C["green"]),
-             ("方向碎片\n(中等)", 15, 5, C["amber"]),
-             ("颜色碎片\n(措辞不确定)", 0, 0, C["grey"])]
-    names=[f[0] for f in frags]; vals=[f[1] for f in frags]; cols=[f[3] for f in frags]
+    frags = [("扳指碎片\n(具体·可验证)", 40, C["green"]),
+             ("方向碎片\n(中等)", 8, C["amber"]),
+             ("颜色碎片\n(措辞不确定)", 0, C["grey"])]
+    names=[f[0] for f in frags]; vals=[f[1] for f in frags]; cols=[f[2] for f in frags]
     bars=ax2.bar(names, vals, color=cols, width=.55, zorder=3)
-    for b,(n,v,p,_) in zip(bars, frags):
-        label = f"{v} 条 / {p} 人" if v>0 else "0 条 / 无人传播"
-        ax2.text(b.get_x()+b.get_width()/2, max(v,1)+1.2, label, ha="center", fontsize=10, fontweight="bold")
+    for b,(n,v,c) in zip(bars, frags):
+        label = f"{v} 条" if v>0 else "0 条 · 无人传播"
+        ax2.text(b.get_x()+b.get_width()/2, max(v,1)+1.2, label, ha="center", fontsize=10.5, fontweight="bold")
     ax2.set_ylim(0, 48); ax2.grid(axis="y", alpha=.25)
     ax2.set_ylabel("14 天后终局记忆条数", fontsize=11)
     ax2.set_title("b. 三碎片命运分化: 不确定细节被传播链静默丢弃", fontsize=12, fontweight="bold")
@@ -108,10 +111,12 @@ def fig2():
     fig, axes = plt.subplots(1, 3, figsize=(14, 4.6), facecolor="white")
     # a 墙钟
     ax=axes[0]
-    ax.bar(["实测","方案推算"], [35, 126], color=[C["green"], C["grey"]], width=.5, zorder=3)
-    for i,v in enumerate([35,126]):
-        ax.text(i, v+5, f"{v} 分钟" + ("\n(快 3.6 倍)" if i==0 else ""), ha="center", fontsize=10, fontweight="bold")
-    ax.set_ylim(0,150); ax.grid(axis="y", alpha=.25)
+    ax.bar(["实测","方案推算\n(1.6–2.5h 区间)"], [35, 123], color=[C["green"], C["grey"]], width=.5, zorder=3,
+           yerr=[[0],[27]], error_kw=dict(ecolor=C["ink"], lw=1.2, capsize=4, capthick=1.2))
+    ax.text(0, 38, "35 分钟\n(快 2.7–4.3 倍)", ha="center", fontsize=10, fontweight="bold")
+    ax.text(1, 155, "误差棒: 96–150 分钟\n(推算区间)", ha="center", fontsize=9)
+    ax.set_ylim(0,185); ax.grid(axis="y", alpha=.25)
+    ax.set_ylabel("墙钟(分钟)", fontsize=10)
     ax.set_title("a. 墙钟: 25 人 × 14 天", fontsize=11.5, fontweight="bold")
 
     # b LLM 调用构成

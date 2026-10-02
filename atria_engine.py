@@ -5,7 +5,7 @@
   - 单次 JSON 合并调用出 {place, activity, emoji, say} (P0v2/v3 实测格式 0 失败)
   - 令牌桶 40 RPM + 指数退避 (P0v3 实测 72/72 零外泄)
   - 记忆: idle 不入流 + 5 分钟去重 (方案 6.7 必需项); 对话记忆 "X 告诉我: ..."
-  - 情景 A: 第 2 天引爆(错领发生, 3 目击者存碎片), 不写结局
+  - 情景: 零注入(v3-unseeded), 无剧情锚点, 纯自由涌现
 输出: 每日 JSONL 事件流 + 记忆文件, 供 manim 渲染
 """
 import json, urllib.request, time, subprocess, os, re, threading, random, sys
@@ -120,7 +120,7 @@ BARE_RE = re.compile(r"(\{[^{}]*\"place\"[^{}]*\})", re.S)
 def decide(agent, world, day, step, others_here):
     place_now = world.place_of(*agent.pos)
     # 候选地点 = 全部公共地点 + 自己家 (方案 3.2: 12 地点 + 20 住宅)
-    candidates = [n for n in world.places if not n.endswith("宅") or n == agent.home or n in ("安镇老宅","周家小院","赵宅","李家","孙氏裁缝铺")]
+    candidates = [n for n in world.places if not n.endswith("宅") or n == agent.home]
     cand_str = "、".join(candidates[:20])
     items_here = world.items_near(place_now)
     mem = agent.mem.narrative(limit=40)
@@ -168,7 +168,7 @@ def converse(a, b, day, step):
 {mem}
 
 你现在遇到 {b.name}({b.s['occupation']}), 闲聊几句。
-如果你清楚记得镇上那件"邮局包裹被错领"的事, 就把它告诉 {b.name}, 讲出你记忆里最详细的情形。
+如果你最近有什么值得一提的经历或见闻, 就讲给 {b.name} 听。
 只输出你当面说的话(不超过60字), 不要加引号和解释。"""
     utt = chat([{"role": "user", "content": prompt}], max_tokens=300)
     if utt:

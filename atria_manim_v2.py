@@ -174,9 +174,9 @@ class AtriaHighlights(Scene):
         self.play(FadeOut(counter))
 
         stats = [
-            ("李大姐的扳指碎片", "36 人次传播", GREEN),
-            ("赵医生的方向碎片", "4 人次传播", YELLOW),
-            ("周老师的颜色碎片", "0 人次 · 不确定措辞被传播链静默丢弃", RED),
+            ("李大姐的扳指碎片", "40 条记忆 · 6 人", GREEN),
+            ("赵医生的方向碎片", "15 条 · 5 人", YELLOW),
+            ("周老师的颜色碎片", "0 条 · 不确定措辞被传播链静默丢弃", RED),
         ]
         lines = VGroup()
         for name, val, col in stats:

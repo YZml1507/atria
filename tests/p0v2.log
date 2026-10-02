@@ -1,0 +1,17 @@
+== P0v2 结果 ==
+步数 24 x 3 人 = 72
+成功 55 / 72
+stats: {'calls': 72, 'ok': 55, 'retry': 3, 'fallback': 0}
+墙钟 66s -> 等效 RPM 65.9
+  失败: ('林阿姨', 17, False, 'LLM 失败')
+  失败: ('小陈', 17, False, 'LLM 失败')
+  失败: ('林阿姨', 18, False, 'LLM 失败')
+  失败: ('小陈', 18, False, 'LLM 失败')
+  失败: ('老王', 18, False, 'LLM 失败')
+  失败: ('林阿姨', 19, False, 'LLM 失败')
+  失败: ('小陈', 19, False, 'LLM 失败')
+  失败: ('老王', 19, False, 'LLM 失败')
+输出样本:
+   '```json\n{\n  "sector": "Hobbs Cafe",\n  "arena": "cafe",\n  "object": "coffee machi'
+   '{\n  "sector": "邮局",\n  "arena": "柜台",\n  "object": "邮局柜台",\n  "emoji": "📋📦✉️",\n  "a'
+   '```json\n{\n  "sector": "Hobbs Cafe",\n  "arena": "cafe",\n  "object": "cafe custome'

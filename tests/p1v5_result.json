@@ -1,0 +1,42 @@
+{
+ "n_memory": 6304,
+ "ans_full": "灰色的，一件灰色粗呢外套——那天我亲眼在邮局门口看见的，后来别人传的黑的蓝的都不对。",
+ "ans_rag": "那人穿的是灰色粗呢外套。",
+ "judge_full": 3,
+ "judge_rag": 1,
+ "marks_full": [
+  "答案=灰",
+  "指出矛盾/来源",
+  "分辨一手vs转述"
+ ],
+ "marks_rag": [
+  "答案=灰"
+ ],
+ "verdict": "卖点成立(全量分辨传言变异)",
+ "usage_full": {
+  "prompt_tokens": 138454,
+  "total_tokens": 138619,
+  "completion_tokens": 165,
+  "prompt_tokens_details": {
+   "cached_tokens": 0,
+   "created_cache_tokens": 138432,
+   "multimodal_tokens": null
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 134
+  }
+ },
+ "usage_rag": {
+  "prompt_tokens": 830,
+  "total_tokens": 951,
+  "completion_tokens": 121,
+  "prompt_tokens_details": {
+   "cached_tokens": 128,
+   "created_cache_tokens": 640,
+   "multimodal_tokens": null
+  },
+  "completion_tokens_details": {
+   "reasoning_tokens": 111
+  }
+ }
+}

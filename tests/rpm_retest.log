@@ -1,0 +1,6 @@
+=== (a) 串行 20 次最小请求 ===
+  成功 0/20, 总时 7.8s, 串行 RPM = 153.6
+  延迟: min=0.25s med=0.29s max=2.01s
+=== (b) 4 线程 x 15 次并发 ===
+  成功 0/60, 总时 2.6s, 并发 RPM = 1359.4
+  错误 33: ['HTTP Error 429: Too Many Requests', 'HTTP Error 429: Too Many Requests', 'HTTP Error 429: Too Many Requests', 'HTTP Error 429: Too Many Requests', 'HTTP Error 429: Too Many Requests']

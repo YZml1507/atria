@@ -246,6 +246,11 @@ def main():
                 for rec in saved.get(a.name, []):
                     a.mem.records.append(tuple(rec))
             print(f"从第{start_day}天续跑: 已载入 {ck}")
+        else:
+            # 记忆 checkpoint 缺失时必须中止, 否则记忆空白重启会静默丢失前几天历史
+            print(f"!! 中止: 断点续跑需要 {ck} 但文件不存在。记忆不可凭空重建。", flush=True)
+            print("    若要全新运行(不要历史记忆), 请用 --start 1。", flush=True)
+            sys.exit(1)
     print(f"引擎启动: 25 人 x {DAYS} 天(从第{start_day}天起), 48 步/日, 决策步 {DECISION_STEPS}, 社交步 {SOCIAL_STEP}, seed={seed}, outdir={outdir}", flush=True)
 
     os.makedirs(outdir, exist_ok=True)

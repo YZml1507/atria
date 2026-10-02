@@ -3,7 +3,7 @@
 字段照 Smallville 七字段精简版(方案 4.1), 词数控制 70-100。
 AgentSociety 分布: age=UniformInt(18,65), gender 等权, occupation 9 种等权。
 """
-import json, random
+import json, random, os
 
 rng = random.Random(20261014)
 
@@ -212,14 +212,14 @@ def main():
     hooked = [s for s in scratches if s["currently"]]
     print(f"\n剧情钩子 (currently 非空): {len(hooked)}/{len(scratches)} (Smallville 对照: 8/25)")
     # 语法检查: 家地名要存在
-    with open("/home/ubuntu/atria_world.json") as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "atria_world.json")) as f:
         w = json.load(f)
     homes_in_world = set(w["spawn"].keys())
     missing = [s["living_area"] for s in scratches if s["living_area"] not in homes_in_world]
     print("世界出生点:", sorted(homes_in_world))
     print("人设居住地缺失:", missing if missing else "无")
-    json.dump(scratches, open("/home/ubuntu/atria_personas.json","w"), ensure_ascii=False, indent=1)
-    print(f"\n人设已存 /home/ubuntu/atria_personas.json ({len(scratches)} 人)")
+    json.dump(scratches, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "atria_personas.json"),"w"), ensure_ascii=False, indent=1)
+    print(f"\n人设已存 atria_personas.json ({len(scratches)} 人)")
 
 if __name__ == "__main__":
     main()

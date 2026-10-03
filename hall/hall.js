@@ -229,6 +229,7 @@ function render() {
   for (const a of order) {
     const ag = D.agents[a.i];
     const [ix, iy] = iso(a.x, a.y);
+    // 同格散开者的名字随身体水平错位
     drawNameBubble(ix * cam.z + cam.x, iy * cam.z + cam.y, ag, a.i, bubRects);
   }
   const dayCur = Math.min(Math.floor(T / 48) + 1, R.days);
@@ -267,14 +268,16 @@ function drawAgent(sx, sy, ag, i, inf) {
 function drawNameBubble(sx, sy, ag, i, placed) {
   const y0 = sy + 20;
   ctx.textAlign = "center";
-  // 名字: 缩得太小只显示选中的; 互撞的名字上移避让
+  // 名字: 缩得太小只显示选中的; 互撞的名字先上移再侧移避让
   if (cam.z >= 0.34 || sel === i) {
     ctx.font = "600 18px 'Noto Sans SC'";
     const nw = ctx.measureText(ag.name).width;
-    let ny = y0 - 50, nt = 0;
-    while (placed.some(q => sx - nw / 2 - 2 < q.x1 && sx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0) && nt < 3) {
-      ny -= 24; nt++;
+    let ny = y0 - 50, nt = 0, nx = sx;
+    while (placed.some(q => nx - nw / 2 - 2 < q.x1 && nx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0) && nt < 3) {
+      if (nt % 2 === 1) nx = sx + (nt === 1 ? 34 : -34); else ny -= 26;
+      nt++;
     }
+    sx = nx;
     placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
     ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
     ctx.strokeText(ag.name, sx, ny);

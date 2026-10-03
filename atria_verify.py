@@ -102,7 +102,9 @@ if __name__ == "__main__":
     print("源数据事实:")
     for k, v in facts.items(): print(f"  {k}: {v}")
     print()
-    issues = check_docs(facts, docs_dir or os.path.dirname(os.path.abspath(__file__)))
+    # 文档断言是 v2 时代的口径硬编码(1109 事件/方向30条等), 只适用于 run_v2;
+    # 其他 run 只核数据层事实, 不扫文档
+    issues = check_docs(facts, docs_dir or os.path.dirname(os.path.abspath(__file__))) if run in ("run_v2", "run") else []
     if issues:
         print(f"!! 发现 {len(issues)} 处不一致:")
         for f, name, got, want in issues:

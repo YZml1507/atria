@@ -273,8 +273,12 @@ function drawNameBubble(sx, sy, ag, i, placed) {
     ctx.font = "600 18px 'Noto Sans SC'";
     const nw = ctx.measureText(ag.name).width;
     let ny = y0 - 50, nt = 0, nx = sx;
-    while (placed.some(q => nx - nw / 2 - 2 < q.x1 && nx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0) && nt < 3) {
-      if (nt % 2 === 1) nx = sx + (nt === 1 ? 34 : -34); else ny -= 26;
+    const tryPos = () => placed.some(q => nx - nw / 2 - 2 < q.x1 && nx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0);
+    while (tryPos() && nt < 6) {
+      const m = nt % 3;
+      if (m === 0) ny -= 28;
+      else if (m === 1) nx = sx + 62;
+      else nx = sx - 62;
       nt++;
     }
     sx = nx;

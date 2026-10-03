@@ -163,7 +163,7 @@ const tOf = e => (e[0] - 1) * 48 + e[1];
 
 // 关键时刻章节: 开局 / 邮局事件或编造起点 / 饱和日 / 结局
 function buildChapters() {
-  const box = $("#chapters"); box.innerHTML = "";
+  const box = $("#chapters"); box.innerHTML = ""; chapterBtns.length = 0;
   const totalInf = Object.keys(R.informed).length;      // 该 run 知情总人数
   let satDay = null;
   for (let d = 1; d <= R.days; d++) {
@@ -183,9 +183,12 @@ function buildChapters() {
     const b = document.createElement("button");
     b.textContent = lb;
     b.onclick = () => { T = (d - 1) * 48; lastT = -1; };
+    b._day = d;
     box.appendChild(b);
+    chapterBtns.push(b);
   });
 }
+let chapterBtns = [];
 function applyEvents(t) {
   // 单调推进; 倒退(拖回去)时重置
   if (t < lastT) { pos = D.agents.map(a => (cellOfHome(a.home) || a.cell).slice()); walking = pos.map(() => null);
@@ -512,6 +515,15 @@ fetch("data.json").then(r => r.json()).then(async d => {
   if (q.get("t")) { T = Math.min(R.days * 48 - 1, parseFloat(q.get("t"))); lastT = -1; }
   if (q.get("sel") != null) { const si = +q.get("sel"); if (si >= 0 && si < 25) showAgent(si); }
   if (q.get("play")) playing = true;
+  if (q.get("tour")) {
+    playing = true; $("#playBtn").textContent = "⏸ 暂停";
+    let ci = 0;
+    setInterval(() => {
+      if (!chapterBtns.length) return;
+      ci = (ci + 1) % chapterBtns.length;
+      T = (chapterBtns[ci]._day - 1) * 48; lastT = -1;
+    }, 9000);
+  }
   if (q.get("speed")) { speed = Math.min(64, Math.max(1, +q.get("speed") || 8)); $("#spdBtn").textContent = speed + "×"; }
   requestAnimationFrame(loop);
 });

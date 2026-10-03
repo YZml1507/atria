@@ -11,7 +11,7 @@ let D = null, run = "v2", R = null;               // data, 当前 run
 let T = 0, playing = false, speed = 8;            // 时间 t = day*48+step (float, 从 step0 起)
 let showNet = true;                               // 传播链路网总开关
 let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false, camTarget = null, follow = -1;
-let evIdx = [], pos = [], sayUntil = [], walking = [], doorAnchor = {};
+let evIdx = [], pos = [], sayUntil = [], walking = [], doorAnchor = {}, lastSay = {};
 
 function panelW() { return innerWidth > 820 ? 316 : 0; }
 const HUES = [210, 20, 150, 260, 40, 185, 330, 75, 285, 100, 175, 250, 15, 200, 130,
@@ -152,7 +152,7 @@ function setupRun(rid) {
   evIdx = R.events;
   pos = D.agents.map(a => (cellOfHome(a.home) || a.cell).slice());
   sayUntil = D.agents.map(() => null); walking = D.agents.map(() => null);
-  evPtr = 0;
+  lastSay = {}; evPtr = 0;
   applyEvents(0);
   buildChapters();
   document.querySelectorAll(".tab").forEach(el => el.classList.toggle("on", el.dataset.r === rid));
@@ -194,16 +194,25 @@ let chapterBtns = [], poiFlash = null;
 function applyEvents(t) {
   // 单调推进; 倒退(拖回去)时重置
   if (t < lastT) { pos = D.agents.map(a => (cellOfHome(a.home) || a.cell).slice()); walking = pos.map(() => null);
-    sayUntil = pos.map(() => null); evPtr = 0; }
+    sayUntil = pos.map(() => null); lastSay = {}; evPtr = 0; }
   while (evPtr < evIdx.length && tOf(evIdx[evPtr]) <= t) {
     const e = evIdx[evPtr]; const ai = e[2];
     if (ai >= 0) {
       const to = cellOfPlace(e[3]);
       walking[ai] = { from: pos[ai].slice(), to, t0: tOf(e), dur: 1.6 };
       pos[ai] = to.slice();
-      if (e[4]) { const jit = (ai * 0.47) % 1.1;
-        sayUntil[ai] = { txt: e[4], since: tOf(e) + jit,
-          until: tOf(e) + jit + 2.0 + Math.min(4.0, e[4].length * 0.055) }; }
+      if (e[4]) {
+        // 同一句词去重: 正在显示只延时, 90 秒(≈2 小时)内不重复冒泡
+        const ls = lastSay[ai], cur = sayUntil[ai];
+        if (cur && cur.txt === e[4] && tOf(e) < cur.until + 6) {
+          cur.until = Math.max(cur.until, tOf(e) + 1.2);
+        } else if (!(ls && ls.txt === e[4] && tOf(e) - ls.t < 90)) {
+          const jit = (ai * 0.47) % 1.1;
+          sayUntil[ai] = { txt: e[4], since: tOf(e) + jit,
+            until: tOf(e) + jit + 2.0 + Math.min(4.0, e[4].length * 0.055) };
+          lastSay[ai] = { txt: e[4], t: tOf(e) };
+        }
+      }
     }
     evPtr++;
   }

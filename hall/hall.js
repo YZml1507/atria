@@ -11,7 +11,7 @@ let D = null, run = "v2", R = null;               // data, 当前 run
 let T = 0, playing = false, speed = 8;            // 时间 t = day*48+step (float, 从 step0 起)
 let showNet = true;                               // 传播链路网总开关
 let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false, camTarget = null, follow = -1;
-let evIdx = [], pos = [], sayUntil = [], walking = [];
+let evIdx = [], pos = [], sayUntil = [], walking = [], doorAnchor = {};
 
 function panelW() { return innerWidth > 820 ? 316 : 0; }
 const HUES = [210, 20, 150, 260, 40, 185, 330, 75, 285, 100, 175, 250, 15, 200, 130,
@@ -199,7 +199,9 @@ function applyEvents(t) {
       const to = cellOfPlace(e[3]);
       walking[ai] = { from: pos[ai].slice(), to, t0: tOf(e), dur: 1.6 };
       pos[ai] = to.slice();
-      if (e[4]) sayUntil[ai] = { txt: e[4], until: tOf(e) + 3.2 };
+      if (e[4]) { const jit = (ai * 0.47) % 1.1;
+        sayUntil[ai] = { txt: e[4], since: tOf(e) + jit,
+          until: tOf(e) + jit + 2.0 + Math.min(4.0, e[4].length * 0.055) }; }
     }
     evPtr++;
   }
@@ -243,9 +245,12 @@ function render() {
   order.forEach(a => { const k = Math.round(a.x) + "," + Math.round(a.y);
     cellIdx[a.i] = cellCnt[k] || 0; cellCnt[k] = (cellCnt[k] || 0) + 1; });
   order.forEach(a => {
+    a.bx = Math.round(a.x); a.by = Math.round(a.y);
     const k = cellIdx[a.i];
     if (k > 0) { const ang = k * 2.1 - 1;
       a.x += Math.cos(ang) * 0.42; a.y += Math.sin(ang) * 0.42; }
+    const da = doorAnchor[a.bx + "," + a.by];
+    if (da) { a.x = da[0] + (a.x - a.bx); a.y = da[1] + (a.y - a.by); }  // 室内→站门口
   });
   const day = Math.floor(T / 48) + 1;
   let know = 0;
@@ -274,7 +279,7 @@ function render() {
     // 同格散开者的名字确定性错位: 第 k 个人左右交替偏 46px
     const k = cellIdx[a.i];
     const dx = k > 0 ? (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 46 : 0;
-    drawNameBubble(ix * cam.z + cam.x + dx, iy * cam.z + cam.y - k * 8, ag, a.i, bubRects);
+    drawNameBubble(ix * cam.z + cam.x + dx, iy * cam.z + cam.y - k * 8, ag, a.i, bubRects, ix * cam.z + cam.x);
   }
   const dayCur = Math.min(Math.floor(T / 48) + 1, R.days);
   const stepCur = Math.floor(T % 48);
@@ -344,7 +349,7 @@ function drawAgent(sx, sy, ag, i, inf, dayCur) {
     ctx.beginPath(); ctx.arc(sx + 11, y0 - 41 + bob, 4.5, 0, 7); ctx.fill(); ctx.stroke();
   }
 }
-function drawNameBubble(sx, sy, ag, i, placed) {
+function drawNameBubble(sx, sy, ag, i, placed, ox) {
   const y0 = sy + 20;
   ctx.textAlign = "center";
   // 名字: 缩得太小只显示选中的; 钳进屏幕; 互撞先上移再侧移, 仍撞则不画
@@ -365,6 +370,11 @@ function drawNameBubble(sx, sy, ag, i, placed) {
     const underHud = sel !== i && nx - nw / 2 < 470 && ny < 132;   // 左上角 HUD 区域不画名字
     if (tryPos() || underHud) { /* 避让失败/遮挡HUD: 跳过名字防叠读 */ } else {
     placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
+    // 避让拉开较远时画虚线牵引回本人头顶, 防止“有名字没人”
+    if (ox !== undefined && (Math.abs(sx - ox) > 30 || ny < y0 - 66)) {
+      ctx.strokeStyle = "rgba(235,238,245,.45)"; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);
+      ctx.beginPath(); ctx.moveTo(sx, ny + 5); ctx.lineTo(ox, y0 - 40); ctx.stroke(); ctx.setLineDash([]);
+    }
     ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
     ctx.strokeText(ag.name, sx, ny);
     ctx.fillStyle = sel === i ? "#ffd166" : "rgba(235,238,245,.97)";
@@ -372,7 +382,9 @@ function drawNameBubble(sx, sy, ag, i, placed) {
     }
   }
   const s = sayUntil[i];
-  if (s && T < s.until && s.txt) {
+  if (s && T >= (s.since || 0) && T < s.until && s.txt) {
+    const fade = Math.min(1, (T - (s.since || 0)) / 0.35, (s.until - T) / 0.6);
+    ctx.save(); ctx.globalAlpha = Math.max(0, fade);
     const txt = s.txt.length > 22 ? s.txt.slice(0, 22) + "…" : s.txt;
     ctx.font = "700 13px 'Noto Sans SC'";
     const nw = ctx.measureText(ag.name).width;
@@ -398,6 +410,7 @@ function drawNameBubble(sx, sy, ag, i, placed) {
     ctx.fillStyle = "#1c2333"; ctx.fillText(txt, sx, by - 6);
     ctx.fillStyle = "rgba(252,252,254,.97)";
     ctx.beginPath(); ctx.moveTo(sx - 6, by + 6); ctx.lineTo(sx + 6, by + 6); ctx.lineTo(sx, by + 14); ctx.fill();
+    ctx.restore();
   }
 }
 function rr(x, y, w, h, r) {
@@ -504,6 +517,12 @@ function loop(now) {
 fetch("data.json").then(r => r.json()).then(async d => {
   D = d; await loadTiles(); buildMap(); renderMap();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => renderMap());
+  // 建筑内部格→门口锚点(室内的人渲染到门前)
+  const putDoor = (box) => { const [x0, y0, x1, y1] = box;
+    const dx = (x0 + x1) / 2 + .5, dy = y1 + 1.05;
+    for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) doorAnchor[x + "," + y] = [dx, dy]; };
+  D.homes.forEach(h => putDoor(h.box));
+  D.places.forEach(p => { if (p.name !== "镇公园") putDoor(p.box); });
   const tabs = $("#tabs");
   Object.keys(D.runs).forEach(rid => {
     const b = document.createElement("div"); b.className = "tab"; b.dataset.r = rid;

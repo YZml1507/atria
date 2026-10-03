@@ -258,6 +258,12 @@ function render() {
     drawAgent(sx, sy, ag, a.i, inf, day);
   }
   drawEdges(spos);
+  if (showNet && R.edges && R.edges.length) {
+    ctx.font = "600 11px 'Noto Sans SC'"; ctx.textAlign = "left";
+    ctx.fillStyle = "rgba(10,12,18,.55)"; rr(10, H - 118, 172, 44, 6); ctx.fill();
+    ctx.fillStyle = "#ffd166"; ctx.fillText("━ 首传(当日知情)", 20, H - 96);
+    ctx.fillStyle = "rgba(160,180,210,.9)"; ctx.fillText("┅ 转述 · 点人看个人链", 20, H - 80);
+  }
   const bubRects = [];
   for (const a of order) {
     const ag = D.agents[a.i];
@@ -504,6 +510,7 @@ fetch("data.json").then(r => r.json()).then(async d => {
   const q = new URLSearchParams(location.search);
   setupRun(q.get("run") || "v2");
   if (q.get("t")) { T = Math.min(R.days * 48 - 1, parseFloat(q.get("t"))); lastT = -1; }
+  if (q.get("sel") != null) { const si = +q.get("sel"); if (si >= 0 && si < 25) showAgent(si); }
   if (q.get("play")) playing = true;
   if (q.get("speed")) { speed = Math.min(64, Math.max(1, +q.get("speed") || 8)); $("#spdBtn").textContent = speed + "×"; }
   requestAnimationFrame(loop);

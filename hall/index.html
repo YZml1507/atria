@@ -54,6 +54,9 @@
   .mrow.tell { border-left-color:#7fd17f; }
   .mrow.think { border-left-color:#b58f3f; }
   #tlinfo { color:#8b93a3; font-size:11.5px; margin-top:14px; }
+  #chain { font-size:11.5px; margin-top:10px; padding:8px 9px; background:#141a24;
+           border-radius:7px; border-left:3px solid #7fd17f; color:#b7bfcc; line-height:1.7; }
+  #chain .d { color:#5f6b82; font-size:10px; margin-left:2px; margin-right:6px; }
   #ctrl { position:absolute; left:0; right:316px; bottom:0; height:56px; z-index:6;
           background:#10131add; border-top:1px solid #232838; display:flex; align-items:center;
           gap:12px; padding:0 18px; backdrop-filter:blur(6px); }
@@ -104,6 +107,7 @@
   <button class="ghost" id="spdBtn">8×</button>
   <input id="slider" type="range" min="0" max="1000" value="0">
   <span id="daylab">第 1 天</span>
+  <button class="ghost" id="netBtn" title="切换传播链路叠加层">🕸 链路</button>
   <div id="chapters"></div>
   <span id="hint">拖时间轴 · 滚轮缩放 · 点人看记忆</span>
 </div>

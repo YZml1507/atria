@@ -9,6 +9,7 @@ const STOREY = 104 * TS;                          // 一层高度(屋顶抬升)
 const OX = 2200, OY = 260;                        // iso 原点偏移(镇中心靠画布中)
 let D = null, run = "v2", R = null;               // data, 当前 run
 let T = 0, playing = false, speed = 8;            // 时间 t = day*48+step (float, 从 step0 起)
+let showNet = true;                               // 传播链路网总开关
 let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false, camTarget = null, follow = -1;
 let evIdx = [], pos = [], sayUntil = [], walking = [];
 
@@ -168,10 +169,13 @@ function buildChapters() {
   for (let d = 1; d <= R.days; d++) {
     if (Object.values(R.informed).filter(v => v <= d).length >= totalInf) { satDay = d; break; }
   }
-  const hasAnchor = !["v3", "hint0"].includes(run);
+  const hasAnchor = run.startsWith("v2") || run.startsWith("v4np");
   const items = [["开局", 1]];
   if (hasAnchor) items.push(["📦 邮局事件", 2]);
-  if (run === "hint0") items.push(["🌀 编造发酵", 4]);
+  if (run.startsWith("hint0")) {
+    const cd = Math.min(...Object.values(R.informed));
+    items.push([`🌀 编造发酵 D${cd}`, cd]);
+  }
   if (satDay && satDay < R.days && totalInf >= 25) items.push([`🔺 饱和 D${satDay}`, satDay]);
   else if (totalInf < 25) items.push([`🕸 停滞 ${totalInf}/25`, R.days]);
   items.push(["🏁 结局", R.days]);
@@ -243,14 +247,17 @@ function render() {
   const day = Math.floor(T / 48) + 1;
   let know = 0;
   ctx.restore();
+  const spos = {};
   for (const a of order) {
     const ag = D.agents[a.i];
     const [ix, iy] = iso(a.x, a.y);
     const sx = ix * cam.z + cam.x, sy = iy * cam.z + cam.y;
+    spos[a.i] = [sx, sy + 8];
     const inf = (R.informed[a.i] || 999) <= day;
     if (inf) know++;
     drawAgent(sx, sy, ag, a.i, inf, day);
   }
+  drawEdges(spos);
   const bubRects = [];
   for (const a of order) {
     const ag = D.agents[a.i];
@@ -277,6 +284,34 @@ function interpPos(i) {
   return [w.from[0] + (w.to[0] - w.from[0]) * e, w.from[1] + (w.to[1] - w.from[1]) * e];
 }
 
+// 传播链路: 虚线弧 src->dst; 刚发生的首传亮黄点流动, showNet 时保留全部历史淡线
+function drawEdges(spos) {
+  if (!R.edges) return;
+  for (const [s, dd, day, step, first] of R.edges) {
+    const dt = T - ((day - 1) * 48 + step);
+    const fresh = dt >= 0 && dt < 10;
+    if (!fresh && !(showNet && dt >= 0)) continue;
+    const p0 = spos[s], p1 = spos[dd];
+    if (!p0 || !p1) continue;
+    const mx = (p0[0] + p1[0]) / 2, my = Math.min(p0[1], p1[1]) - 26 - Math.abs(p1[0] - p0[0]) * .12;
+    ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.quadraticCurveTo(mx, my, p1[0], p1[1]);
+    if (fresh) {
+      ctx.strokeStyle = first ? "rgba(255,209,102,.9)" : "rgba(127,209,127,.85)";
+      ctx.lineWidth = 2.4;
+    } else {
+      ctx.strokeStyle = first ? "rgba(255,209,102,.30)" : "rgba(120,150,190,.13)";
+      ctx.lineWidth = 1;
+    }
+    ctx.setLineDash([5, 5]); ctx.stroke(); ctx.setLineDash([]);
+    if (fresh) {
+      const ph = Math.min(1, dt / 6), u = 1 - ph;
+      const qx = u * u * p0[0] + 2 * u * ph * mx + ph * ph * p1[0];
+      const qy = u * u * p0[1] + 2 * u * ph * my + ph * ph * p1[1];
+      ctx.fillStyle = first ? "#ffd166" : "#7fd17f";
+      ctx.beginPath(); ctx.arc(qx, qy, 4, 0, 7); ctx.fill();
+    }
+  }
+}
 function drawAgent(sx, sy, ag, i, inf, dayCur) {
   const bob = walking[i] ? Math.sin(T * 9 + i) * 2 : 0;
   const y0 = sy + 20;
@@ -389,6 +424,13 @@ function showAgent(i) {
     <span class="tag ${inf && inf <= day ? "inf" : ""}">${inf ? (inf <= day ? `D${inf} 知情` : `D${inf} 将知情`) : "未知情"}</span>
     <span class="tag">住 ${a.home}</span></div>
     <div class="persona">${a.persona || "（无人设注入）"}</div>
+    ${(() => {
+      const ins = (R.edges || []).filter(e => e[1] === i && e[2] <= day);
+      const outs = (R.edges || []).filter(e => e[0] === i && e[2] <= day);
+      if (!ins.length && !outs.length) return "";
+      const fmt = es => es.map(e => `${D.agents[e[0] === i ? e[1] : e[0]].name}<span class="d">D${e[2]}</span>`).join("，");
+      return `<div id="chain">${ins.length ? `<div>◀ 被告知：${fmt(ins)}</div>` : ""}${outs.length ? `<div>▶ 告知了：${fmt(outs)}</div>` : ""}</div>`;
+    })()}
     <div id="tlinfo">传闻相关记忆（到第 ${day} 天）</div>
     <div id="memlist">${mems.map(r =>
       `<div class="mrow ${r[2] === "对话" ? "tell" : ""}"><span class="d">D${r[0]}·${String(r[1]).padStart(2, "0")}步</span>${r[2]}：${esc(r[3])}</div>`
@@ -433,6 +475,7 @@ function focusAgent(i) {
 $("#slider").oninput = e => { playing = false; $("#playBtn").textContent = "▶ 播放"; T = e.target.value / 1000 * (R.days * 48 - 1); };
 $("#playBtn").onclick = () => { playing = !playing; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; };
 $("#spdBtn").onclick = () => { speed = speed >= 64 ? 4 : speed * 2; $("#spdBtn").textContent = speed + "×"; };
+$("#netBtn").onclick = () => { showNet = !showNet; $("#netBtn").style.opacity = showNet ? 1 : .45; };
 
 let last = performance.now();
 function loop(now) {

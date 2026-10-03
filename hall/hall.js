@@ -205,6 +205,15 @@ function render() {
     const p = interpPos(i);
     return { i, x: p[0], y: p[1] };
   }).sort((a, b) => (a.x + a.y) - (b.x + b.y));
+  // 同格散开: 每格第 k 个人沿环偏移
+  const cellCnt = {}, cellIdx = {};
+  order.forEach(a => { const k = Math.round(a.x) + "," + Math.round(a.y);
+    cellIdx[a.i] = cellCnt[k] || 0; cellCnt[k] = (cellCnt[k] || 0) + 1; });
+  order.forEach(a => {
+    const k = cellIdx[a.i];
+    if (k > 0) { const ang = k * 2.1 - 1;
+      a.x += Math.cos(ang) * 0.22; a.y += Math.sin(ang) * 0.22; }
+  });
   const day = Math.floor(T / 48) + 1;
   let know = 0;
   ctx.restore();
@@ -216,10 +225,12 @@ function render() {
     if (inf) know++;
     drawAgent(sx, sy, ag, a.i, inf);
   }
+  const bubRects = [];
   for (const a of order) {
     const ag = D.agents[a.i];
     const [ix, iy] = iso(a.x, a.y);
-    drawNameBubble(ix * cam.z + cam.x, iy * cam.z + cam.y, ag, a.i);
+    // 同格散开者的名字随身体水平错位
+    drawNameBubble(ix * cam.z + cam.x, iy * cam.z + cam.y, ag, a.i, bubRects);
   }
   const dayCur = Math.min(Math.floor(T / 48) + 1, R.days);
   const stepCur = Math.floor(T % 48);
@@ -239,37 +250,67 @@ function interpPos(i) {
 }
 
 function drawAgent(sx, sy, ag, i, inf) {
-  const bob = walking[i] ? Math.sin(T * 9 + i) * 1.5 : 0;
-  const y0 = sy + 14;
+  const bob = walking[i] ? Math.sin(T * 9 + i) * 2 : 0;
+  const y0 = sy + 20;
   // 影子
   ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.beginPath();
-  ctx.ellipse(sx, y0 + 2, 8, 3.2, 0, 0, 7); ctx.fill();
+  ctx.ellipse(sx, y0 + 3, 13, 5, 0, 0, 7); ctx.fill();
   // 身体
   ctx.fillStyle = sel === i ? "#ffd166" : PAL[i];
-  ctx.strokeStyle = "rgba(0,0,0,.5)"; ctx.lineWidth = 1;
-  rr(sx - 5, y0 - 17 + bob, 10, 15, 4); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.arc(sx, y0 - 21 + bob, 4.6, 0, 7); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = "rgba(0,0,0,.55)"; ctx.lineWidth = 1.6;
+  rr(sx - 8, y0 - 27 + bob, 16, 24, 6); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(sx, y0 - 34 + bob, 7.5, 0, 7); ctx.fill(); ctx.stroke();
   if (inf) {  // 知情: 头顶小亮点
-    ctx.fillStyle = "#7fd17f"; ctx.beginPath(); ctx.arc(sx + 7, y0 - 26 + bob, 2.6, 0, 7); ctx.fill();
+    ctx.fillStyle = "#7fd17f"; ctx.strokeStyle = "rgba(0,0,0,.4)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(sx + 11, y0 - 41 + bob, 4, 0, 7); ctx.fill(); ctx.stroke();
   }
 }
-function drawNameBubble(sx, sy, ag, i) {
-  const y0 = sy + 14;
-  ctx.font = "10.5px 'Noto Sans SC'"; ctx.textAlign = "center";
-  ctx.fillStyle = sel === i ? "#ffd166" : "rgba(215,220,230,.92)";
-  ctx.fillText(ag.name, sx, y0 - 30);
+function drawNameBubble(sx, sy, ag, i, placed) {
+  const y0 = sy + 20;
+  ctx.textAlign = "center";
+  // 名字: 缩得太小只显示选中的; 互撞的名字先上移再侧移避让
+  if (cam.z >= 0.34 || sel === i) {
+    ctx.font = "600 18px 'Noto Sans SC'";
+    const nw = ctx.measureText(ag.name).width;
+    let ny = y0 - 50, nt = 0, nx = sx;
+    while (placed.some(q => nx - nw / 2 - 2 < q.x1 && nx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0) && nt < 3) {
+      if (nt % 2 === 1) nx = sx + (nt === 1 ? 34 : -34); else ny -= 26;
+      nt++;
+    }
+    sx = nx;
+    placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
+    ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
+    ctx.strokeText(ag.name, sx, ny);
+    ctx.fillStyle = sel === i ? "#ffd166" : "rgba(235,238,245,.97)";
+    ctx.fillText(ag.name, sx, ny);
+  }
   const s = sayUntil[i];
   if (s && T < s.until && s.txt) {
-    const txt = s.txt.length > 16 ? s.txt.slice(0, 16) + "…" : s.txt;
-    ctx.font = "11px 'Noto Sans SC'";
-    const w = ctx.measureText(txt).width + 14;
-    const by = y0 - 58;
-    ctx.fillStyle = "rgba(250,250,252,.96)";
-    rr(sx - w / 2, by - 15, w, 19, 5); ctx.fill();
-    ctx.strokeStyle = "rgba(60,70,90,.6)"; ctx.stroke();
-    ctx.fillStyle = "#222a3a"; ctx.fillText(txt, sx, by - 1);
-    ctx.fillStyle = "rgba(250,250,252,.96)";
-    ctx.beginPath(); ctx.moveTo(sx - 4, by + 4); ctx.lineTo(sx + 4, by + 4); ctx.lineTo(sx, by + 9); ctx.fill();
+    const txt = s.txt.length > 22 ? s.txt.slice(0, 22) + "…" : s.txt;
+    ctx.font = "700 13px 'Noto Sans SC'";
+    const nw = ctx.measureText(ag.name).width;
+    ctx.font = "600 17px 'Noto Sans SC'";
+    const w = Math.max(ctx.measureText(txt).width, nw) + 26;
+    // 气泡水平钳进可视区(留出右侧面板)
+    sx = Math.min(Math.max(sx, w / 2 + 10), innerWidth - 330 - w / 2);
+    let by = Math.max(y0 - 96, 56);   // 顶部不裁切
+    // 防重叠: 与已放气泡碰撞则上移一个槽位
+    const rect = () => ({ x0: sx - w / 2 - 3, x1: sx + w / 2 + 3, y0: by - 46, y1: by + 17 });
+    let r = rect(), tries = 0;
+    while (placed.some(q => r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0) && tries < 6) {
+      by -= 54; r = rect(); tries++;
+    }
+    by = Math.max(by, 56);           // 避让后仍不越顶
+    placed.push(r);
+    ctx.fillStyle = "rgba(252,252,254,.97)";
+    rr(sx - w / 2, by - 44, w, 50, 8); ctx.fill();
+    ctx.strokeStyle = "rgba(50,60,80,.65)"; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.font = "700 13px 'Noto Sans SC'";
+    ctx.fillStyle = PAL[i]; ctx.fillText(ag.name, sx, by - 26);
+    ctx.font = "600 17px 'Noto Sans SC'";
+    ctx.fillStyle = "#1c2333"; ctx.fillText(txt, sx, by - 6);
+    ctx.fillStyle = "rgba(252,252,254,.97)";
+    ctx.beginPath(); ctx.moveTo(sx - 6, by + 6); ctx.lineTo(sx + 6, by + 6); ctx.lineTo(sx, by + 14); ctx.fill();
   }
 }
 function rr(x, y, w, h, r) {
@@ -370,12 +411,14 @@ fetch("data.json").then(r => r.json()).then(async d => {
   const tabs = $("#tabs");
   Object.keys(D.runs).forEach(rid => {
     const b = document.createElement("div"); b.className = "tab"; b.dataset.r = rid;
-    b.innerHTML = `${D.runs[rid].label}<br><span class="n">${Object.keys(D.runs[rid].informed).length}/25 知情</span>`;
+    const short = { "v2": "v2 锚+引", "v4np": "v4 锚·无引", "v4np2": "v4 种子2", "v3": "v3 零注入", "hint0": "v4 零锚+引" };
+    b.innerHTML = `${short[rid] || D.runs[rid].label}<br><span class="n">${Object.keys(D.runs[rid].informed).length}/25 知情</span>`;
     b.onclick = () => setupRun(rid); tabs.appendChild(b);
   });
   const q = new URLSearchParams(location.search);
   setupRun(q.get("run") || "v2");
   if (q.get("t")) { T = Math.min(R.days * 48 - 1, parseFloat(q.get("t"))); lastT = -1; }
   if (q.get("play")) playing = true;
+  if (q.get("speed")) { speed = Math.min(64, Math.max(1, +q.get("speed") || 8)); $("#spdBtn").textContent = speed + "×"; }
   requestAnimationFrame(loop);
 });

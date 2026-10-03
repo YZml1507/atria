@@ -213,7 +213,7 @@ function render() {
   order.forEach(a => {
     const k = cellIdx[a.i];
     if (k > 0) { const ang = k * 2.1 - 1;
-      a.x += Math.cos(ang) * 0.22; a.y += Math.sin(ang) * 0.22; }
+      a.x += Math.cos(ang) * 0.42; a.y += Math.sin(ang) * 0.42; }
   });
   const day = Math.floor(T / 48) + 1;
   let know = 0;
@@ -230,8 +230,10 @@ function render() {
   for (const a of order) {
     const ag = D.agents[a.i];
     const [ix, iy] = iso(a.x, a.y);
-    // 同格散开者的名字随身体水平错位
-    drawNameBubble(ix * cam.z + cam.x, iy * cam.z + cam.y, ag, a.i, bubRects);
+    // 同格散开者的名字确定性错位: 第 k 个人左右交替偏 46px
+    const k = cellIdx[a.i];
+    const dx = k > 0 ? (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 46 : 0;
+    drawNameBubble(ix * cam.z + cam.x + dx, iy * cam.z + cam.y - k * 8, ag, a.i, bubRects);
   }
   const dayCur = Math.min(Math.floor(T / 48) + 1, R.days);
   const stepCur = Math.floor(T % 48);
@@ -269,25 +271,28 @@ function drawAgent(sx, sy, ag, i, inf) {
 function drawNameBubble(sx, sy, ag, i, placed) {
   const y0 = sy + 20;
   ctx.textAlign = "center";
-  // 名字: 缩得太小只显示选中的; 互撞的名字先上移再侧移避让
+  // 名字: 缩得太小只显示选中的; 钳进屏幕; 互撞先上移再侧移, 仍撞则不画
   if (cam.z >= 0.34 || sel === i) {
     ctx.font = "600 18px 'Noto Sans SC'";
     const nw = ctx.measureText(ag.name).width;
-    let ny = y0 - 50, nt = 0, nx = sx;
+    let ny = y0 - 50, nt = 0;
+    let nx = Math.min(Math.max(sx, nw / 2 + 6), innerWidth - panelW() - nw / 2 - 6);
     const tryPos = () => placed.some(q => nx - nw / 2 - 2 < q.x1 && nx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0);
     while (tryPos() && nt < 6) {
       const m = nt % 3;
       if (m === 0) ny -= 28;
-      else if (m === 1) nx = sx + 62;
-      else nx = sx - 62;
+      else if (m === 1) nx = Math.min(sx + 62, innerWidth - panelW() - nw / 2 - 6);
+      else nx = Math.max(sx - 62, nw / 2 + 6);
       nt++;
     }
     sx = nx;
+    if (tryPos()) { /* 避让失败: 跳过名字防叠读 */ } else {
     placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
     ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
     ctx.strokeText(ag.name, sx, ny);
     ctx.fillStyle = sel === i ? "#ffd166" : "rgba(235,238,245,.97)";
     ctx.fillText(ag.name, sx, ny);
+    }
   }
   const s = sayUntil[i];
   if (s && T < s.until && s.txt) {

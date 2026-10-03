@@ -503,6 +503,7 @@ function loop(now) {
 
 fetch("data.json").then(r => r.json()).then(async d => {
   D = d; await loadTiles(); buildMap(); renderMap();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => renderMap());
   const tabs = $("#tabs");
   Object.keys(D.runs).forEach(rid => {
     const b = document.createElement("div"); b.className = "tab"; b.dataset.r = rid;
@@ -514,8 +515,8 @@ fetch("data.json").then(r => r.json()).then(async d => {
   setupRun(q.get("run") || "v2");
   if (q.get("t")) { T = Math.min(R.days * 48 - 1, parseFloat(q.get("t"))); lastT = -1; }
   if (q.get("sel") != null) { const si = +q.get("sel"); if (si >= 0 && si < 25) showAgent(si); }
-  if (q.get("play")) playing = true;
-  if (q.get("tour")) {
+  if (q.has("play")) { playing = true; $("#playBtn").textContent = "⏸ 暂停"; }
+  if (q.has("tour")) {
     playing = true; $("#playBtn").textContent = "⏸ 暂停";
     let ci = 0;
     setInterval(() => {

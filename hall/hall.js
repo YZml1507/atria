@@ -117,7 +117,7 @@ function renderMap() {
     drawB(p.name, p.box, st);
   });
   // 地名标注: 贴在建筑正面上方
-  g.font = "600 15px 'Noto Sans SC'"; g.textAlign = "center";
+  g.font = "700 26px 'Noto Sans SC'"; g.textAlign = "center";
   D.places.forEach(p => {
     if (p.name === "镇公园") {
       const [sx, sy] = iso((p.box[0] + p.box[2]) / 2 + .5, p.box[3] + .5);
@@ -131,9 +131,10 @@ function renderMap() {
 }
 function label(g, txt, sx, sy) {
   const w = g.measureText(txt).width + 14;
-  g.fillStyle = "rgba(18,22,30,.82)";
-  g.beginPath(); g.roundRect(sx - w / 2, sy - 10, w, 17, 4); g.fill();
-  g.fillStyle = "#e8ecf2"; g.fillText(txt, sx, sy + 2);
+  g.fillStyle = "rgba(18,22,30,.85)";
+  g.beginPath(); g.roundRect(sx - w / 2, sy - 16, w, 28, 6); g.fill();
+  g.strokeStyle = "rgba(120,140,170,.35)"; g.lineWidth = 1; g.stroke();
+  g.fillStyle = "#e8ecf2"; g.fillText(txt, sx, sy + 4);
 }
 function drawPark(box, g) {
   const [x0, y0, x1, y1] = box;

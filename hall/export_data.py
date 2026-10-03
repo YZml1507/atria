@@ -75,7 +75,12 @@ for rid, spec in RUNS.items():
             for r in json.load(open(f)).get(a["name"], []):
                 if any(m in r[3] for m in spec["markers"]):
                     mem_rumor[ai].append(r)
-        mem_rumor[ai] = mem_rumor[ai][:80]
+        # checkpoint 逐日累积 → 同一记忆在多天的 checkpoint 里重复出现, 按内容去重保序
+        seen, dedup = set(), []
+        for r in mem_rumor[ai]:
+            k = tuple(r)
+            if k not in seen: seen.add(k); dedup.append(r)
+        mem_rumor[ai] = dedup[:80]
     out["runs"][rid] = dict(label=spec["label"], days=spec["days"], events=events,
                             informed=informed, place_index=pidx, mem_rumor=mem_rumor)
     print(rid, len(events), "events; informed:", len(informed))

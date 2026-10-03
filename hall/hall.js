@@ -171,7 +171,8 @@ function buildChapters() {
   const items = [["开局", 1]];
   if (hasAnchor) items.push(["📦 邮局事件", 2]);
   if (run === "hint0") items.push(["🌀 编造发酵", 4]);
-  if (satDay && satDay < R.days) items.push([`🔺 饱和 D${satDay}`, satDay]);
+  if (satDay && satDay < R.days && totalInf >= 25) items.push([`🔺 饱和 D${satDay}`, satDay]);
+  else if (totalInf < 25) items.push([`🕸 停滞 ${totalInf}/25`, R.days]);
   items.push(["🏁 结局", R.days]);
   items.forEach(([lb, d]) => {
     const b = document.createElement("button");

@@ -6,10 +6,15 @@
 """
 import json, re, os, sys, glob
 
-def load_facts(run_dir="/home/ubuntu/atria_rerun"):
+def load_facts(run_dir="run_v2"):
     """从原始数据重新计算全部事实, 不信任任何文档"""
-    mem = json.load(open(f"{run_dir}/mem_day14.json"))
-    evs = [json.loads(l) for d in range(1, 15) for l in open(f"{run_dir}/day{d:02d}.jsonl")]
+    days = sorted(int(re.match(r"day(\d+)\.jsonl", f).group(1))
+                  for f in os.listdir(run_dir) if re.match(r"day\d+\.jsonl", f))
+    ndays = days[-1]
+    mems = sorted(int(re.match(r"mem_day(\d+)\.json", f).group(1))
+                  for f in os.listdir(run_dir) if re.match(r"mem_day\d+\.json", f))
+    mem = json.load(open(f"{run_dir}/mem_day{mems[-1]:02d}.json"))
+    evs = [json.loads(l) for d in days for l in open(f"{run_dir}/day{d:02d}.jsonl")]
     F = {}
     F["事件总数"] = len(evs)
     F["决策事件"] = sum(1 for e in evs if e.get("emoji") != "💬")
@@ -30,7 +35,7 @@ def load_facts(run_dir="/home/ubuntu/atria_rerun"):
 
     # 知情曲线
     curve = []
-    for d in range(5, 15):
+    for d in mems:
         m = json.load(open(f"{run_dir}/mem_day{d:02d}.json"))
         k = set()
         for p, v in m.items():
@@ -91,13 +96,13 @@ if __name__ == "__main__":
         i = args.index("--docs")
         docs_dir = args[i+1]
         del args[i:i+2]
-    run = args[0] if args else "/home/ubuntu/atria_rerun"
+    run = args[0] if args else "run_v2"
     facts = load_facts(run)
     print(f"数据源: {run}")
     print("源数据事实:")
     for k, v in facts.items(): print(f"  {k}: {v}")
     print()
-    issues = check_docs(facts, docs_dir or "/home/ubuntu/atria_repo")
+    issues = check_docs(facts, docs_dir or os.path.dirname(os.path.abspath(__file__)))
     if issues:
         print(f"!! 发现 {len(issues)} 处不一致:")
         for f, name, got, want in issues:

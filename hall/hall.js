@@ -9,7 +9,7 @@ const STOREY = 104 * TS;                          // 一层高度(屋顶抬升)
 const OX = 2200, OY = 260;                        // iso 原点偏移(镇中心靠画布中)
 let D = null, run = "v2", R = null;               // data, 当前 run
 let T = 0, playing = false, speed = 8;            // 时间 t = day*48+step (float, 从 step0 起)
-let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false;
+let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false, camTarget = null, follow = -1;
 let evIdx = [], pos = [], sayUntil = [], walking = [];
 
 const HUES = [210, 20, 150, 260, 40, 185, 330, 75, 285, 100, 175, 250, 15, 200, 130,
@@ -317,6 +317,7 @@ let drag = null;
 cv.addEventListener("mousedown", e => drag = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y, moved: 0 });
 addEventListener("mousemove", e => {
   if (!drag) return;
+  camTarget = null; follow = -1;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
   if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = 1;
   cam.x = drag.cx + dx; cam.y = drag.cy + dy;
@@ -337,7 +338,13 @@ function pickAgent(px, py) {
     const d = Math.hypot(sx - lx, sy + 14 - ly);
     if (d < bd) { bd = d; best = i; }
   });
-  if (bd < 30) showAgent(best); else { sel = -1; }
+  if (bd < 30) { showAgent(best); follow = best; focusAgent(best); }
+  else { sel = -1; follow = -1; }
+}
+function focusAgent(i) {
+  const p = interpPos(i); const [ix, iy] = iso(p[0], p[1]);
+  const W = innerWidth, H = innerHeight;
+  camTarget = { x: (W - 316) / 2 - ix * cam.z, y: H * .45 - iy * cam.z };
 }
 $("#slider").oninput = e => { playing = false; $("#playBtn").textContent = "▶ 播放"; T = e.target.value / 1000 * (R.days * 48 - 1); };
 $("#playBtn").onclick = () => { playing = !playing; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; };
@@ -346,6 +353,12 @@ $("#spdBtn").onclick = () => { speed = speed >= 64 ? 4 : speed * 2; $("#spdBtn")
 let last = performance.now();
 function loop(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (camTarget) {
+    const k = Math.min(1, dt * 4);
+    cam.x += (camTarget.x - cam.x) * k; cam.y += (camTarget.y - cam.y) * k;
+    if (Math.hypot(camTarget.x - cam.x, camTarget.y - cam.y) < 2) camTarget = null;
+  }
+  if (follow >= 0 && !camTarget) focusAgent(follow);   // 选中的人移动时镜头跟住
   if (playing) T = Math.min(R.days * 48 - 1, T + dt * speed);
   applyEvents(T); render();
   if (sel >= 0) { /* 面板内容随时间更新一次/秒 */ if (!loop._t || now - loop._t > 1000) { showAgent(sel); loop._t = now; } }

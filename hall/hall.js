@@ -12,6 +12,7 @@ let T = 0, playing = false, speed = 8;            // 时间 t = day*48+step (flo
 let cam = { x: 0, y: 0, z: 1 }, sel = -1, camInit = false, camTarget = null, follow = -1;
 let evIdx = [], pos = [], sayUntil = [], walking = [];
 
+function panelW() { return innerWidth > 820 ? 316 : 0; }
 const HUES = [210, 20, 150, 260, 40, 185, 330, 75, 285, 100, 175, 250, 15, 200, 130,
               300, 55, 225, 160, 90, 270, 45, 195, 120, 340];
 const PAL = HUES.map(h => `hsl(${h},60%,62%)`);
@@ -195,7 +196,7 @@ function render() {
   bg.addColorStop(0, "#0d1017"); bg.addColorStop(1, "#12161f");
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
   if (!camInit) { cam.z = 0.5; const [cx, cy] = iso(D.grid[0] / 2 + 1, D.grid[1] / 2 - 1);
-    cam.x = (W - 316) / 2 - cx * cam.z; cam.y = H * .5 - cy * cam.z; camInit = true; }
+    cam.x = (W - panelW()) / 2 - cx * cam.z; cam.y = H * .5 - cy * cam.z; camInit = true; }
   ctx.save();
   ctx.translate(cam.x, cam.y); ctx.scale(cam.z, cam.z);
   ctx.drawImage(mapCv, 0, 0);
@@ -296,7 +297,7 @@ function drawNameBubble(sx, sy, ag, i, placed) {
     ctx.font = "600 17px 'Noto Sans SC'";
     const w = Math.max(ctx.measureText(txt).width, nw) + 26;
     // 气泡水平钳进可视区(留出右侧面板)
-    sx = Math.min(Math.max(sx, w / 2 + 10), innerWidth - 330 - w / 2);
+    sx = Math.min(Math.max(sx, w / 2 + 10), innerWidth - panelW() - 14 - w / 2);
     let by = Math.max(y0 - 96, 56);   // 顶部不裁切
     // 防重叠: 与已放气泡碰撞则上移一个槽位
     const rect = () => ({ x0: sx - w / 2 - 3, x1: sx + w / 2 + 3, y0: by - 46, y1: by + 17 });
@@ -389,7 +390,7 @@ function pickAgent(px, py) {
 function focusAgent(i) {
   const p = interpPos(i); const [ix, iy] = iso(p[0], p[1]);
   const W = innerWidth, H = innerHeight;
-  camTarget = { x: (W - 316) / 2 - ix * cam.z, y: H * .45 - iy * cam.z };
+  camTarget = { x: (W - panelW()) / 2 - ix * cam.z, y: H * .45 - iy * cam.z };
 }
 $("#slider").oninput = e => { playing = false; $("#playBtn").textContent = "▶ 播放"; T = e.target.value / 1000 * (R.days * 48 - 1); };
 $("#playBtn").onclick = () => { playing = !playing; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; };

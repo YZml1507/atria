@@ -1,6 +1,6 @@
 # Atria — 安镇：LLM 小镇中的受控信息传播实验
 
-> 25 agents · 91 天对照实验 · 7,000+ 起事件 · 运行期零人工干预
+> 25 agents · 105 天对照实验 · 8,300+ 起事件 · 运行期零人工干预
 
 **A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded six of them with fragments of an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="五轮 run 的知情人数曲线：四格饱和 vs 零注入停滞" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="六轮 run 的知情人数曲线：四格饱和 vs 零注入停滞" width="760">
 </p>
 
 ---

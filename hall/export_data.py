@@ -16,6 +16,8 @@ RUNS = {
                  markers=["包裹","错领","扳指","邮局","纸箱","旧物"]),
     "v3":   dict(dir=os.path.join(REPO, "run_v3"),                  days=35, label="v3 零注入",
                  markers=["远客","新来的","新来","南边来","本县人","外乡","那户人家","生面孔"]),
+    "v3s2": dict(dir=os.path.join(REPO, "run_v3s2"),                days=35, label="v3 零注入·种子2",
+                 markers=["远客","新来的","新来","南边来","本县人","外乡","那户人家","生面孔"]),
 }
 sys.path.insert(0, REPO)
 from atria_world import PLACES, HOMES_SOUTH, ROADS, GRID_W, GRID_H
@@ -83,8 +85,28 @@ for rid, spec in RUNS.items():
             k = tuple(r)
             if k not in seen: seen.add(k); dedup.append(r)
         mem_rumor[ai] = dedup[:80]
+    # 传播链路: 从 'X 告诉我/回我说: ...' 对话记忆提取 src->dst 边
+    tell = re.compile(r"^(.+?)\s*(?:告诉我|回我说)[:：]")
+    edges, ebest = [], {}
+    for ai, rows in mem_rumor.items():
+        for day, step, kind, text in rows:
+            if kind != "对话":
+                continue
+            m = tell.match(text)
+            if not m:
+                continue
+            src = aidx.get(m.group(1).strip())
+            if src is None or src == ai:
+                continue
+            k = (src, ai)
+            if k not in ebest or (day, step) < ebest[k][:2]:
+                ebest[k] = (day, step, text[:60])
+    for (src, dst), (day, step, txt) in sorted(ebest.items()):
+        # first=该边发生的当天正好是 dst 的知情日(疑似首传)
+        edges.append([src, dst, day, step, 1 if informed.get(dst) == day else 0, txt])
     out["runs"][rid] = dict(label=spec["label"], days=spec["days"], events=events,
-                            informed=informed, place_index=pidx, mem_rumor=mem_rumor)
+                            informed=informed, place_index=pidx, mem_rumor=mem_rumor,
+                            edges=edges)
     print(rid, len(events), "events; informed:", len(informed))
 
 json.dump(out, open(os.path.join(os.path.dirname(__file__), "data.json"), "w"),

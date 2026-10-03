@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="六轮 run 的知情人数曲线：四格饱和 vs 零注入停滞" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="七轮 run 的知情人数曲线：五格饱和 vs 零注入两种子均未饱和" width="760">
 </p>
 
 ---
@@ -31,7 +31,7 @@
 | | 有引导句 | 无引导句 |
 |---|---|---|
 | **有锚点** | v2：**25/25**，第 9 天饱和 | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
-| **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现，n=2）—— **全镇集体编造** | v3：**4/25** 停滞（35 天，0 注入报警） |
+| **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现，n=2）—— **全镇集体编造** | v3：**4/25 与 19/25**（两种子、35 天、均未饱和） |
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
 
@@ -53,11 +53,11 @@
 
 **② 引导句放大深度而非广度。** 关掉引导句后饱和速度几乎不变（D8/D9 vs D9），但碎片转述量降至约 1/4（164/30/0 → 44/8/0）。引导不是必要条件，是扩音器。
 
-**③ 零注入会产生信息，但长不大。** v3 中居民 D1 即兴虚构"镇中新来了一户人家"——不存在于任何设定。35 天被提及 167 次、触达 4 人，但从未产生实质内容：所有台词都是提问（"你听说没？"），从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
+**③ 零注入会产生信息，但长不大。** v3 两个种子下居民都在 D1 即兴虚构"镇中新来了一户人家"——不存在于任何设定。s1 中 35 天触达 4 人、s2 触达 19 人但传播链稀疏（3 与 36 条首传边 vs 注入组 78–127），均未饱和：所有台词都是提问（"你听说没？"），从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
-  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：四条曲线长到 78–127 条 vs 零注入 35 天 3 条" width="760"><br>
+  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：五格 78–127 条 vs 零注入 s1 3 条 / s2 36 条" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
@@ -81,12 +81,12 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-六轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+七轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v3s2 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 局限与复现边界
 
 - 本实验**不是零干预**：v2/v4 的初始记忆锚点为作者设定；"零注入"指零信息注入，非零人设注入
-- 每格条件样本量 n=1–2：两格关键条件均有双种子复现（v4np D8/D9、hint0 D8/D13），v3 仍为单次运行
+- 每格条件样本量 n=2：四格全部双种子复现（v4np D8/D9、hint0 D8/D13、v3 4/25 与 19/25）
 - 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
 - v2 的三碎片结论仅在有锚点条件下成立
 - 全部方法学细节与逐 run 数据见 `docs/REPORT_v4_noprompt.md`、`docs/REPORT_v3_unseeded.md`、`FINAL_REPORT.md`
@@ -116,7 +116,7 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
-run_v2/  run_v3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/   六轮完整实验数据
+run_v2/  run_v3/  run_v3s2/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/   七轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 

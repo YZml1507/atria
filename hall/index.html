@@ -50,6 +50,20 @@
                  border-radius:50%; background:#4d8dff; cursor:pointer; }
   #daylab { font-variant-numeric:tabular-nums; color:#c8d0de; min-width:130px; font-size:12.5px; }
   #hint { color:#5f6b82; font-size:11px; }
+  @media (max-width: 820px) {
+    #hud h1 { font-size:15px; }
+    #hud .sub { font-size:10.5px; }
+    #tabs { flex-wrap:wrap; gap:4px; max-width:60vw; }
+    .tab { padding:3px 8px; font-size:10.5px; }
+    #curve { right:10px; top:auto; bottom:66px; padding:5px 9px; }
+    #curve .big { font-size:16px; }
+    #curve .lbl { font-size:9.5px; }
+    #panel { top:auto; left:0; right:0; bottom:56px; width:100%; height:38vh;
+             border-left:0; border-top:1px solid #232838; padding:10px; }
+    #ctrl { right:0; height:56px; padding:0 10px; gap:8px; }
+    #daylab { min-width:96px; font-size:11px; }
+    #hint { display:none; }
+  }
 </style>
 </head>
 <body>

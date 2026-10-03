@@ -66,7 +66,8 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 
 | 视频 | 内容 |
 |---|---|
-| `renders/atria_v4.mp4` | v2 主交付：14 天浓缩为 87 秒（含旁白与字幕） |
+| `renders/atria_v5.mp4` | **主交付**：v2+v3 两条件完整对照（112 秒，含旁白与字幕） |
+| `renders/atria_v4.mp4` | v2 单条件版（87 秒） |
 | `renders/atria_v3.mp4` | v3 零注入对照片段 |
 | `renders/atria_highlights.mp4` | 关键事件剪辑 |
 

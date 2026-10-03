@@ -13,7 +13,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig5_spread_v3_vs_v2.png" alt="传播动力学对照：v2 的 S 型曲线 vs v3 的 4 人平台" width="720">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="五轮 run 的知情人数曲线：四格饱和 vs 零注入停滞" width="760">
 </p>
 
 ---

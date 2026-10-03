@@ -496,7 +496,7 @@ function focusAgent(i) {
 }
 $("#slider").oninput = e => { playing = false; $("#playBtn").textContent = "▶ 播放"; T = e.target.value / 1000 * (R.days * 48 - 1); };
 $("#playBtn").onclick = () => { playing = !playing; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; };
-$("#spdBtn").onclick = () => { speed = speed >= 64 ? 4 : speed * 2; $("#spdBtn").textContent = speed + "×"; };
+$("#spdBtn").onclick = () => { speed = speed >= 64 ? 1 : speed * 2; $("#spdBtn").textContent = speed + "×"; };
 $("#netBtn").onclick = () => { showNet = !showNet; $("#netBtn").style.opacity = showNet ? 1 : .45; };
 
 let last = performance.now();

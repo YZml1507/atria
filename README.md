@@ -57,6 +57,7 @@
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
+  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：四条曲线长到 78–127 条 vs 零注入 35 天 3 条" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 

@@ -27,7 +27,7 @@
 | | 有引导句 | 无引导句 |
 |---|---|---|
 | **有锚点** | v2：**25/25**，第 9 天饱和 | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
-| **零锚点** | hint0：**25/25**，第 8 天饱和 —— **全镇集体编造** | v3：**4/25** 停滞（35 天，0 注入报警） |
+| **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现，n=2）—— **全镇集体编造** | v3：**4/25** 停滞（35 天，0 注入报警） |
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
 
@@ -75,12 +75,12 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-五轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v4np / run_v4np2 / run_hint0`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+六轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 诚实声明与局限
 
 - 本实验**不是零干预**：v2/v4 的初始记忆锚点为作者设定；"零注入"指零信息注入，非零人设注入
-- 每格条件样本量 n=1–2：无 hint 格有双种子复现，hint0 格为单次运行，方差基线仍薄
+- 每格条件样本量 n=1–2：两格关键条件均有双种子复现（v4np D8/D9、hint0 D8/D13），v3 仍为单次运行
 - 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
 - v2 的三碎片结论仅在有锚点条件下成立
 - 全部方法学细节与逐 run 数据见 `docs/REPORT_v4_noprompt.md`、`docs/REPORT_v3_unseeded.md`、`FINAL_REPORT.md`
@@ -110,7 +110,7 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
-run_v2/  run_v3/  run_v4np/  run_v4np2/  run_hint0/   五轮完整实验数据
+run_v2/  run_v3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/   六轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 

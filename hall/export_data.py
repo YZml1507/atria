@@ -12,7 +12,9 @@ RUNS = {
                  markers=["错领","包裹","扳指","旧物","纸箱","邮局"]),
     "hint0": dict(dir=os.path.join(REPO, "run_hint0"), days=14, label="v4 零锚点+有引导",
                  markers=["包裹","错领","扳指","邮局","纸箱","旧物"]),
-    "v3":   dict(dir="/tmp/run_v3",                  days=35, label="v3 零注入",
+    "hint0s2": dict(dir=os.path.join(REPO, "run_hint0s2"), days=14, label="v4 零锚+引·种子2",
+                 markers=["包裹","错领","扳指","邮局","纸箱","旧物"]),
+    "v3":   dict(dir=os.path.join(REPO, "run_v3"),                  days=35, label="v3 零注入",
                  markers=["远客","新来的","新来","南边来","本县人","外乡","那户人家","生面孔"]),
 }
 sys.path.insert(0, REPO)

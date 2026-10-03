@@ -1,24 +1,22 @@
 #!/usr/bin/env python3.12
 """Atria 视频 v6 渲染 — 按调研结论的四幕结构
 
+[已弃用] 已知缺陷: -shortest 截掉结尾旁白 / 句标与 mp3 顺序错位导致提示抢跑 /
+        结尾大字叠穿 / 全程无小镇画面。请改用 atria_video_v7.py。本文件保留供溯源。
+
 四幕时间轴(从旁白时间轴读, 不硬编码):
   HOOK      0 - ~9s    : 第二人称 + 常识→矛盾
   SETUP     ~9 - ~28s  : 纸箱事件 + 三碎片
   PROGRESSION ~28 - ~84s: 三阶梯递进(扳指→方向→颜色) + 误传/反派
   REVEAL    ~84 - 155s : v3 零注入对照 + 收尾问句
-
-镜头节奏: ~10-15s 一个视觉变化(调研: 112s→8-11 beats, 本片 155s→12-16 beats)
-        : 每个 beat 由旁白幕切换自然驱动(不用硬切)
-数字呈现: 不把旁白句子当字幕烧屏(调研: 冗余原则 d≈0.87 为负效应)
-        : 只给圆角数字 + 高亮/箭头视觉提示
 """
 import os, json, glob
 import pygame
 
-HERE = "/home/ubuntu/atria_repo"
-RUN2 = "/home/ubuntu/atria_rerun"
-RUN3 = "/home/ubuntu/atria_v3/run_v3"
-NARR_DIR = "/home/ubuntu/atria_repo/narration_v6"
+HERE = os.path.dirname(os.path.abspath(__file__))
+RUN2 = os.environ.get("ATRIA_RUN2", os.path.join(HERE, "run_v2"))
+RUN3 = os.environ.get("ATRIA_RUN3", os.path.join(HERE, "run_v3"))
+NARR_DIR = os.environ.get("ATRIA_NARR", os.path.join(HERE, "narration_v6"))
 W, H = 1280, 720
 FPS = 30
 

@@ -202,15 +202,16 @@ function applyEvents(t) {
       walking[ai] = { from: pos[ai].slice(), to, t0: tOf(e), dur: 1.6 };
       pos[ai] = to.slice();
       if (e[4]) {
-        // 同一句词去重: 正在显示只延时, 90 秒(≈2 小时)内不重复冒泡
+        // 同人同句整 run 只冒一次泡(LLM 复读是噪音);
+        // 跨人重复照旧——B 复述 A 的话正是传播证据
         const ls = lastSay[ai], cur = sayUntil[ai];
         if (cur && cur.txt === e[4] && tOf(e) < cur.until + 6) {
           cur.until = Math.max(cur.until, tOf(e) + 1.2);
-        } else if (!(ls && ls.txt === e[4] && tOf(e) - ls.t < 90)) {
+        } else if (!(ls && ls[e[4]])) {
           const jit = (ai * 0.47) % 1.1;
           sayUntil[ai] = { txt: e[4], since: tOf(e) + jit,
             until: tOf(e) + jit + 2.0 + Math.min(4.0, e[4].length * 0.055) };
-          lastSay[ai] = { txt: e[4], t: tOf(e) };
+          (lastSay[ai] = lastSay[ai] || {})[e[4]] = 1;
         }
       }
     }

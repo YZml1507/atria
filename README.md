@@ -94,7 +94,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 
 | 资产 | 说明 |
 |---|---|
-| [在线展厅](https://yzml1507.github.io/atria/hall/) | 等距小镇回放 + 6 run 对照 + 传播链路叠加 + 居民记忆面板 |
+| [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 6 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v9.mp4` | 主视频（116s）：展厅实演 + 2×2 结果 + 引导即播种 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
 | `docs/figures/` | 9 张程序化生成证据图 |

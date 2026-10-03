@@ -162,10 +162,10 @@ const tOf = e => (e[0] - 1) * 48 + e[1];
 // 关键时刻章节: 开局 / 邮局事件或编造起点 / 饱和日 / 结局
 function buildChapters() {
   const box = $("#chapters"); box.innerHTML = "";
-  const maxInf = Math.max(...Object.values(R.informed));
+  const totalInf = Object.keys(R.informed).length;      // 该 run 知情总人数
   let satDay = null;
   for (let d = 1; d <= R.days; d++) {
-    if (Object.values(R.informed).filter(v => v <= d).length >= maxInf) { satDay = d; break; }
+    if (Object.values(R.informed).filter(v => v <= d).length >= totalInf) { satDay = d; break; }
   }
   const hasAnchor = !["v3", "hint0"].includes(run);
   const items = [["开局", 1]];

@@ -66,7 +66,8 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 
 | 视频 | 内容 |
 |---|---|
-| `renders/atria_v7.mp4` | **主交付**：v2+v3 对照（四幕叙事 + 像素小镇画面 + 字幕） |
+| `renders/atria_v8.mp4` | **主交付**：3D 小镇开场/邮局事件 + 像素地图数据幕（四幕叙事 + 字幕） |
+| `renders/atria_v7.mp4` | 2D 版（四幕叙事 + 像素小镇画面 + 字幕） |
 | `renders/atria_v6.mp4` | 上一版（155 秒）：结尾音轨被截断、画面提示错位、无小镇画面，已被 v7 取代 |
 | `renders/atria_v5.mp4` | 两条件对照版（112 秒） |
 | `renders/atria_v4.mp4` | v2 单条件版（87 秒，像素地图版式沿用至 v7） |
@@ -78,7 +79,7 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 ## 诚实声明
 
 - 本实验**不是零干预**。v2 的初始记忆锚点为作者设定；v3 删除了全部信息锚点，是"零信息注入"而非"零人设注入"（25 人的姓名/职业/性格仍是手写的）
-- **v2 的社交步 prompt 含引导句**（`converse()`："如果你清楚记得邮局包裹被错领的事，就告诉他"），v3 没有这句——所以 v2↔v3 的差异混入了"prompt 引导"第二变量，不纯是"初始锚点"。补齐该混杂变量的对照实验见 `experiment/v4-noprompt` 分支（有锚点、关引导，`--neutral-social`）
+- **v2 的社交步 prompt 含引导句**（`converse()`："如果你清楚记得邮局包裹被错领的事，就告诉他"），v3 没有这句——原对照混入了"prompt 引导"第二变量。已补实验（`experiment/v4-noprompt` 分支，`--neutral-social`）：**关掉引导后传闻仍在第 8 天饱和 25/25，但碎片转述降到 44/8/0**——引导句放大深度而非广度；"颜色 0 传播"的确定性结论在无引导下依然成立。见 `docs/REPORT_v4_noprompt.md`
 - v2 的三碎片结论仅在有锚点条件下成立；v3 未形成碎片对照，故"确定性决定存活"目前只在有锚点框架内有证据
 - 两轮均为单次运行，无 run-to-run 方差基线（v1/v2 同种子复跑 D1 得 79 vs 78 事件：复现的是秩序，不是数字）
 - 远程 LLM 端点同种子也不逐位确定
@@ -111,6 +112,7 @@ atria_figures.py     v2 四张证据图 · atri­a_v3_figures.py  v3 三张（�
 atria_video_v7.py    视频渲染管线 v7（四幕 + 像素小镇 + 字幕）；v6 已弃用保留溯源
 narration_v6/        旁白素材：39 段 mp3 + narration_track_v6.mp3 + timeline.json
 run_v2/              v2 数据（14 天事件 + 逐日记忆 + 日志）
+run_v4np/            v4-noprompt 数据（有锚点×关引导，14 天）
 run/                 v1 数据（同种子噪声基线）
 docs/                设计方案、实验报告、调研归档（15 份）
 docs/figures/        7 张证据图   renders/  视频

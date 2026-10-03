@@ -49,7 +49,9 @@ class Renderer:
         pygame.init()
         pygame.display.set_mode((1, 1))
         self.screen = pygame.Surface((W, H))
-        TTC = "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"
+        TTC = next(c for c in (os.path.expanduser("~/.fonts/NotoSansSC.ttf"),
+                               "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
+                   if os.path.exists(c))
         self.f_title = pygame.font.Font(TTC, 44)
         self.f_big = pygame.font.Font(TTC, 40)
         self.f_body = pygame.font.Font(TTC, 28)
@@ -78,6 +80,8 @@ class Renderer:
                     frames.append(pygame.image.frombuffer(si.tobytes(), si.size, "RGBA").convert_alpha())
             if frames:
                 self.sprites[nm] = frames
+        # 精灵黑色剪影(描边用)
+        self.silh = {nm: [self._darken(f) for f in frames] for nm, frames in self.sprites.items()}
         # 世界几何
         from atria_world import PLACES, HOMES_SOUTH, ROADS
         self.PLACES, self.HOMES_SOUTH, self.ROADS = PLACES, HOMES_SOUTH, ROADS
@@ -99,6 +103,17 @@ class Renderer:
     def place_box(self, name):
         return (self.PLACES.get(name, {}).get("box") or self.HOMES_SOUTH.get(name)
                 or self.ROADS.get(name) or (5, 5, 10, 10))
+
+    @staticmethod
+    def _darken(surf):
+        d = surf.copy()
+        d.fill((8, 9, 12, 255), special_flags=pygame.BLEND_RGBA_MULT)
+        return d
+
+    def chip(self, x, y, w, h, alpha=175):
+        p = pygame.Surface((int(w), int(h)), pygame.SRCALPHA)
+        p.fill((14, 15, 22, alpha))
+        self.screen.blit(p, (int(x), int(y)))
 
     def text(self, s, font, color, x, y, anchor="topleft"):
         surf = font.render(s, True, color)
@@ -127,8 +142,13 @@ class Renderer:
         self.screen.blit(sub, (x + 24, y + 9))
 
     def sprite_at(self, name, px, py, frame=0):
-        if name in self.sprites:
-            self.screen.blit(self.sprites[name][frame % len(self.sprites[name])], (px - 26, py - 27))
+        if name not in self.sprites:
+            return
+        fr = frame % len(self.sprites[name])
+        sil = self.silh[name][fr]
+        for ox, oy in ((-2, 0), (2, 0), (0, -2), (0, 2)):
+            self.screen.blit(sil, (px - 26 + ox, py - 27 + oy))
+        self.screen.blit(self.sprites[name][fr], (px - 26, py - 27))
 
     def label(self, s, x, y, color=(255, 244, 200)):
         """带描边底的地名标签"""
@@ -237,22 +257,25 @@ class Renderer:
             px, py = self.grid_to_px((box[0] + box[2]) / 2 + rng.uniform(-0.5, 0.5),
                                      (box[1] + box[3]) / 2 + rng.uniform(-0.5, 0.5))
             self.sprite_at(nm, px, py, 0)
-        # 左上: 天数 + 知情计数 + 进度条
+        # 左上: 天数 + 知情计数 + 进度条 (垫深色块避免压地图)
         self.label(f"第 {day} / 14 天", 150, 24)
         knows = KNOWS[day - 1]
-        self.text(f"知情 {knows} / 25", self.f_big, (120, 200, 255), 40, 84, "topleft")
-        pygame.draw.rect(self.screen, (60, 60, 70), (40, 136, 340, 12))
-        pygame.draw.rect(self.screen, (120, 200, 255), (40, 136, int(knows / 25 * 340), 12))
-        # 右上: 三碎片转述计数 (随天数生长)
+        self.chip(30, 78, 320, 84)
+        self.text(f"知情 {knows} / 25", self.f_big, (140, 210, 255), 44, 86, "topleft")
+        pygame.draw.rect(self.screen, (70, 70, 82), (44, 136, 280, 14), border_radius=7)
+        pygame.draw.rect(self.screen, (140, 210, 255), (44, 136, int(knows / 25 * 280), 14), border_radius=7)
+        # 右上: 三碎片转述计数 (随天数生长, 垫面板)
         grow = min(1.0, day / 14)
+        self.chip(W - 330, 12, 316, 140)
         for i, (nm, v, c) in enumerate(FRAGS):
-            yy = 24 + i * 46
-            self.text(f"{nm}  {int(v * grow)} 条", self.f_body, c, W - 330, yy, "topleft")
+            yy = 24 + i * 44
+            self.text(f"{nm}  {int(v * grow)} 条", self.f_body, c, W - 314, yy, "topleft")
         # 周老师证据 (n18 起)
         if t >= T("n18"):
             a = min(1.0, (t - T("n18")) / 0.6)
+            self.chip(30, 168, 380, 50, alpha=int(175 * a))
             self.text("周老师 35 次发言 · 0 次提颜色", self.f_body,
-                      (int(255 * a), int(110 * a), int(110 * a)), 40, 160, "topleft")
+                      (int(255 * a), int(120 * a), int(120 * a)), 44, 176, "topleft")
         # 孙有财反派弧 (n24/n25): 精灵高亮 + 事件卡
         if t >= T("n24"):
             box = self.place_box("五金店")
@@ -261,8 +284,9 @@ class Renderer:
             self.sprite_at("孙有财", sx, sy, 1)
             self.label("孙有财 · 无人怀疑", sx, sy - 96, color=(255, 140, 140))
         if t >= T("n25"):
+            self.chip(30, 226, 400, 44)
             self.text("D12 烧掉登记存根 · D13 趁夜还回纸箱", self.f_small,
-                      (255, 170, 170), 40, 196, "topleft")
+                      (255, 180, 180), 44, 234, "topleft")
 
     # ---------- 幕 4: reveal (n26 ~ 结尾, v3 零注入对照) ----------
     def act_reveal(self, t):

@@ -1,12 +1,14 @@
-# Atria — 当一个 LLM 小镇什么都不注入，会发生什么？
+# Atria — 安镇：LLM 小镇中的受控信息传播实验
 
-> 25 个智能体 · 49 天对照实验 · 3,856 起事件 · 零运行期干预
+> 25 agents · 91 天对照实验 · 7,000+ 起事件 · 运行期零人工干预
+
+**A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded six of them with fragments of an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
 <div align="center">
 
-**25 / 25** 全员知情（v2，14 天） · **164 / 30 / 0** 碎片命运分化 · **4 / 25** 自发传闻上限（v3，35 天）
+**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v9.mp4)** (116s) · **[📄 实验报告](docs/REPORT_v4_noprompt.md)**
 
-**[🎮 在线可交互展厅](https://yzml1507.github.io/atria/hall/)** — 拖时间轴回放五轮真实运行，点开任意居民看传闻记忆流
+拖时间轴回放五轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
 </div>
 
@@ -14,124 +16,101 @@
   <img src="docs/figures/fig5_spread_v3_vs_v2.png" alt="传播动力学对照：v2 的 S 型曲线 vs v3 的 4 人平台" width="720">
 </p>
 
-<span>上图标红为 v2（有锚点）：知情人数 11→25 的 **S 型饱和**。标蓝为 v3（零注入）：自发传闻 35 天停在 4 人。两条曲线的形状差即本项目的核心实验结果。</span>
-
 ---
 
-## 这是什么
+## 核心结果：2×2 对照
 
-Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用来做**信息传播的受控实验**。
-小镇本身不产生任何剧情——所有对话、传言、误解与心理转变，都是智能体基于各自记忆自主决策的结果。
+唯一操纵变量：**初始记忆锚点**（包裹错领事件的碎片）× **社交引导句**（prompt 中"如果你记得就告诉他"）。同引擎、同种子、同 25 个人设。
 
-实验问了一个具体问题：**信息的"确定性"是否决定它在传播链中的存活？**
-以及反过来：**如果什么都不注入，信息会自己长出来吗？**
-
-答案都落在上图的曲线里。
-
-## 两条件对照
-
-唯一变量：**初始记忆里有没有"故事"**。同引擎、同 25 人、同种子。
-
-| | v2（有锚点） | v3（零注入） |
+| | 有引导句 | 无引导句 |
 |---|---|---|
-| 初始记忆 | 10 人被注入剧情锚点（错领事件 + 三枚碎片） | 25 人全部只有日常生活 |
-| 天数 | 14 | 35 |
-| 事件 | 1,109 | 2,747 |
-| 注入报警 | — | **0**（35 天零泄漏） |
-| 结果 | **全员 25/25 知情** · 三碎片 164/30/0 | 只有一个自发传闻，触达 **4/25**，35 天空转 |
+| **有锚点** | v2：**25/25**，第 9 天饱和 | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
+| **零锚点** | hint0：**25/25**，第 8 天饱和 —— **全镇集体编造** | v3：**4/25** 停滞（35 天，0 注入报警） |
 
-## 实验发现了什么
+**引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
 
-**① 确定性决定存活。** 三位目击者持有同一事件的碎片信息，措辞确定性不同：
+## 三个关键发现
 
-| 碎片 | 措辞 | 14 天后被传递次数 |
+**① 措辞确定性决定碎片存活。** 三位目击者持有同一事件的碎片，措辞确定性不同：
+
+| 碎片 | 措辞 | 14 天后被传递次数（有引导 / 无引导） |
 |---|---|---|
-| 扳指 | "戴旧扳指"（具体） | **164** |
-| 方向 | "抱纸箱往镇东头走"（半具体） | **30** |
-| 颜色 | "衣裳偏浅，好像灰色"（不确定） | **0** |
+| 扳指 | "戴旧扳指"（具体） | 164 / 44 |
+| 方向 | "抱纸箱往镇东头走"（半具体） | 30 / 8 |
+| 颜色 | "衣裳偏浅，好像灰色"（不确定） | 0 / 0 |
 
-措辞不确定的碎片被传播链**静默丢弃**。最硬的证据是周老师本人——她持有颜色碎片，14 天 35 次发言**没有 1 次提颜色**，全部追随具体线索：她自己就是淘汰机制的运行过程。
+措辞不确定的碎片被传播链**静默丢弃**——在有无引导两种条件下结论一致。最硬的证据是周老师本人：她持有颜色碎片，14 天 35 次发言没有 1 次提颜色，全部追随具体线索。
+
+**② 引导句放大深度而非广度。** 关掉引导句后饱和速度几乎不变（D8/D9 vs D9），但碎片转述量降至约 1/4（164/30/0 → 44/8/0）。引导不是必要条件，是扩音器。
+
+**③ 零注入会产生信息，但长不大。** v3 中居民 D1 即兴虚构"镇中新来了一户人家"——不存在于任何设定。35 天被提及 167 次、触达 4 人，但从未产生实质内容：所有台词都是提问（"你听说没？"），从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
 
 <p align="center">
-  <img src="docs/figures/fig1_spread.png" alt="知情扩散曲线与三碎片命运分化" width="560">
+  <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
-**② 零注入会产生信息，但长不大。** v3 中吕婶（零注入人设）D1 即兴虚构出"镇中新来了一户人家"——这个设定不存在于任何设定文件。35 天里它被提及 167 次、触达 4 人，但**从未产生实质内容**：所有台词都是提问（"你听说没？""到底何时到？"），从 D9 起只剩两人在重复互问直到实验结束。
+## 方法学
 
-<p align="center">
-  <img src="docs/figures/fig6_rumor_lifecycle.png" alt="远客传闻生命周期" width="560">
-</p>
+- **引擎**：`atria_engine.py`（~600 行，零框架依赖）——日程作息 + 记忆检索 + 社交对话 + 心事沉淀；Atria-Dawn-Preview 驱动，429 退避与降级
+- **世界**：40×30 地图、32 个地点、25 位手写人设（姓名/职业/性格/作息）
+- **运行**：每轮 14–35 天、每天 ~75 次 LLM 调用、JSONL 事件流 + 逐日记忆 checkpoint 全量入库
+- **口径**：知情判定 = 记忆中出现传闻标志词（`atria_fragments.py` 程序化判定，非人工标注）；碎片计数排除持有者自记
+- **对照**：同种子 noise floor 由 v1 基线提供（同种子复跑 D1 得 79 vs 78 事件）
 
-**③ 合并结论：锚点不只是"提供信息"，它把提问式传闻变成陈述式传播。** 零注入时好奇心真实存在（天天有人主动问"有啥新鲜事"），但"看起来在聊"不等于"有信息在传"。
-
-## 可视化
-
-| 视频 | 内容 |
-|---|---|
-| `renders/atria_v9.mp4` | **主交付**：展厅实演版（116 秒）——等距小镇回放 + 2×2 实验含"引导即播种"新发现 + 五路对照，在线展厅 yzml1507.github.io/atria/hall/ |
-| `renders/atria_v8.mp4` | 3D 小镇开场/邮局事件 + 像素地图数据幕（四幕叙事 + 字幕） |
-| `renders/atria_v7.mp4` | 2D 版（四幕叙事 + 像素小镇画面 + 字幕） |
-| `renders/atria_v6.mp4` | 上一版（155 秒）：结尾音轨被截断、画面提示错位、无小镇画面，已被 v7 取代 |
-| `renders/atria_v5.mp4` | 两条件对照版（112 秒） |
-| `renders/atria_v4.mp4` | v2 单条件版（87 秒，像素地图版式沿用至 v7） |
-| `renders/atria_v3.mp4` | v3 零注入对照片段 |
-| `renders/atria_highlights.mp4` | 关键事件剪辑 |
-
-全部图表见 `docs/figures/`（7 张），由 `atria_figures.py` + `atria_v3_figures.py` 从原始事件流程序化生成。
-
-## 诚实声明
-
-- 本实验**不是零干预**。v2 的初始记忆锚点为作者设定；v3 删除了全部信息锚点，是"零信息注入"而非"零人设注入"（25 人的姓名/职业/性格仍是手写的）
-- **v2 的社交步 prompt 含引导句**（`converse()`："如果你清楚记得邮局包裹被错领的事，就告诉他"），v3 没有这句——原对照混入了"prompt 引导"第二变量。已补实验（`experiment/v4-noprompt` 分支，`--neutral-social`）：**关掉引导后传闻仍在第 8 天饱和 25/25，但碎片转述降到 44/8/0**——引导句放大深度而非广度；"颜色 0 传播"的确定性结论在无引导下依然成立。见 `docs/REPORT_v4_noprompt.md`
-- v2 的三碎片结论仅在有锚点条件下成立；v3 未形成碎片对照，故"确定性决定存活"目前只在有锚点框架内有证据
-- 两轮均为单次运行，无 run-to-run 方差基线（v1/v2 同种子复跑 D1 得 79 vs 78 事件：复现的是秩序，不是数字）
-- 远程 LLM 端点同种子也不逐位确定
-
-## 运行
+## 复现
 
 ```bash
-export ATRIA_LLM_KEY=sk-...        # LLM API key（也可放在 ~/.hermes/.env）
-export ATRIA_LLM_URL=https://...   # 可选，默认 discovery-api.intern-ai.org.cn
-export ATRIA_LLM_MODEL=...         # 可选，默认 Atria-Dawn-Preview
+export ATRIA_LLM_KEY=sk-...          # 也可放 ~/.hermes/.env
+export ATRIA_LLM_URL=https://...     # 可选，默认 discovery-api.intern-ai.org.cn
+export ATRIA_LLM_MODEL=...           # 可选，默认 Atria-Dawn-Preview
 
-python3 atri­a_engine.py 14 --seed 20261014 --outdir run_v2     # 跑 14 天（约 52 分钟）
-python3 atri­a_engine.py 14 --seed 20261014 --outdir run_np --neutral-social  # 关闭社交引导句
-python3 atri­a_verify.py run_v2                                  # 校验文档数字与数据一致
+python3 atria_engine.py 14 --seed 20261014 --outdir run_x                  # 14 天 ~52 分钟
+python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关闭引导句
+python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-视频渲染链：`tts_gen_v2.py`（edge-tts 生成逐句 mp3）→ `atria_track_v6.py`（拼接音轨 + 生成 timeline.json）→ `atria_video_v7.py`（pygame 渲染 + ffmpeg 合成）。旁白素材在 `narration_v6/`（39 段 mp3 + 合成音轨 + 时间轴）。
+五轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v4np / run_v4np2 / run_hint0`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
-快速浏览不必运行：直接看 `docs/REPORT_v3_unseeded.md`（v3 报告）与 `FINAL_REPORT.md`（v2 报告），或播放 `renders/atria_v4.mp4`。
+## 诚实声明与局限
+
+- 本实验**不是零干预**：v2/v4 的初始记忆锚点为作者设定；"零注入"指零信息注入，非零人设注入
+- 每格条件样本量 n=1–2：无 hint 格有双种子复现，hint0 格为单次运行，方差基线仍薄
+- 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
+- v2 的三碎片结论仅在有锚点条件下成立
+- 全部方法学细节与逐 run 数据见 `docs/REPORT_v4_noprompt.md`、`docs/REPORT_v3_unseeded.md`、`FINAL_REPORT.md`
+
+## 与文献的关系
+
+Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 91 天总时长。
+
+## 资源
+
+| 资产 | 说明 |
+|---|---|
+| [在线展厅](https://yzml1507.github.io/atria/hall/) | 等距小镇回放 + 5 run 对照 + 居民记忆面板 |
+| `renders/atria_v9.mp4` | 主视频（116s）：展厅实演 + 2×2 结果 + 引导即播种 |
+| `renders/` | v3–v8 历代视频（保留溯源） |
+| `docs/figures/` | 7 张程序化生成证据图 |
+| `docs/` | 设计方案、实验报告、调研归档（15 份） |
 
 ## 仓库结构
 
 ```
-atria_engine.py      涌现引擎（记忆/决策/社交，含 checkpoint 保护）
+atria_engine.py      涌现引擎（记忆/决策/社交，checkpoint 保护，--neutral-social）
 atria_world.py       小镇世界（40×30 地图，32 地点）
 atria_personas.py    25 位居民人设
-atria_fragments.py   三碎片传播口径锁定（程序化判定规则）
+atria_fragments.py   三碎片传播口径锁定（程序化判定）
 atria_verify.py      数据一致性校验（所有文档数字可溯源）
-atria_figures.py     v2 四张证据图 · atri­a_v3_figures.py  v3 三张（在 experiment/v3-unseeded 分支）
-atria_video_v7.py    视频渲染管线 v7（四幕 + 像素小镇 + 字幕）；v6 已弃用保留溯源
-narration_v6/        旁白素材：39 段 mp3 + narration_track_v6.mp3 + timeline.json
-run_v2/              v2 数据（14 天事件 + 逐日记忆 + 日志）
-run_v4np/            v4-noprompt 数据（有锚点×关引导，14 天）
-run/                 v1 数据（同种子噪声基线）
-docs/                设计方案、实验报告、调研归档（15 份）
-docs/figures/        7 张证据图   renders/  视频
+atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
+narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
+hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
+run_v2/  run_v3/  run_v4np/  run_v4np2/  run_hint0/   五轮完整实验数据
+docs/                报告与图   renders/  视频
 ```
 
-分支：`main`（v2 交付线）· `experiment/v1-round1` · `experiment/v2-round2` · `experiment/v3-unseeded`（v3 数据 + 报告 + 绘图脚本）
-
-## 与文献的关系
-
-Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。Atria 的差异点：25 人规模 × 两条件对照 × 运行期零人类干预 × 49 天。
-
-## 技术卖点
-
-**512K 全量记忆** vs RAG top-30 检索：P1v5 实验中，全量记忆在 138,454 token 下判据完整性 3/3，RAG 仅 1/3——**分辨时间线与来源可信度**，只有记忆完整的智能体做得到。详见 `docs/atria_plan_v1.1.md`。
+分支：`main`（交付线）· `experiment/v4-noprompt`（本 PR 工作线，含 v3/v4/hint0 数据与展厅）· `experiment/v1-round1` · `experiment/v2-round2` · `experiment/v3-unseeded`
 
 ## 引用与许可
 
-MIT License。素材：Kenney CC0 + 程序化生成 + PIPOYA 免费包。
-若引用本实验，请参考 `FINAL_REPORT.md` 的口径定义（碎片计数排除持有者自记，方向为双条件转述）。
+MIT License。素材：Kenney Sketch Town (CC0) + 程序化生成。音乐：Deliberate Thought — Kevin MacLeod (CC BY 4.0)。
+若引用本实验，请参考 `FINAL_REPORT.md` 的口径定义。

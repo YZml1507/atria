@@ -14,12 +14,22 @@ from concurrent.futures import ThreadPoolExecutor
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from atria_world import World
 
-KEY = subprocess.run(
-    ["bash", "-c",
-     "grep '^HERMES_CUSTOM_DISCOVERY_API_INTERN_AI_ORG_CN_API_KEY=' /home/ubuntu/.hermes/.env | head -1 | cut -d= -f2-"],
-    capture_output=True, text=True, timeout=60).stdout.strip()
-URL = "https://discovery-api.intern-ai.org.cn/v1/chat/completions"
-MODEL = "Atria-Dawn-Preview"
+def load_key():
+    """API key: 优先环境变量 ATRIA_LLM_KEY, 回退 /home/ubuntu/.hermes/.env"""
+    k = os.environ.get("ATRIA_LLM_KEY", "").strip()
+    if k:
+        return k
+    try:
+        return subprocess.run(
+            ["bash", "-c",
+             "grep '^HERMES_CUSTOM_DISCOVERY_API_INTERN_AI_ORG_CN_API_KEY=' /home/ubuntu/.hermes/.env | head -1 | cut -d= -f2-"],
+            capture_output=True, text=True, timeout=60).stdout.strip()
+    except Exception:
+        return ""
+
+KEY = load_key()
+URL = os.environ.get("ATRIA_LLM_URL", "https://discovery-api.intern-ai.org.cn/v1/chat/completions")
+MODEL = os.environ.get("ATRIA_LLM_MODEL", "Atria-Dawn-Preview")
 
 DAYS = 14  # 默认 14 天; main() 会按命令行参数覆盖
 STEPS_PER_DAY = 48            # sec_per_step=30s
@@ -160,16 +170,23 @@ def decide(agent, world, day, step, others_here):
 
 
 # ---------- 对话(复用 P2v2 验证机制) ----------
+# v4-noprompt 条件: --neutral-social 时删掉传闻引导句。
+# 背景: v2 的 converse prompt 每天主动提示 agent "记得错领的事就告诉他",
+# 即"25/25 全员知情"里混有 prompt 引导变量; neutral 模式补齐 2x2 缺失格
+# (有锚点 x 无引导), 只改这一句, 引擎机制完全不动。
+NEUTRAL_SOCIAL = False
+
 def converse(a, b, day, step):
     """a 主动找 b 聊一句。a 从全量记忆生成转述, b 记入。"""
     mem = a.mem.narrative()
+    rumor_hint = "" if NEUTRAL_SOCIAL else (
+        f"如果你清楚记得镇上那件\"邮局包裹被错领\"的事, 就把它告诉 {b.name}, 讲出你记忆里最详细的情形。\n")
     prompt = f"""你是 {a.name}。这是你从第1天到第{day}天的全部记忆:
 
 {mem}
 
 你现在遇到 {b.name}({b.s['occupation']}), 闲聊几句。
-如果你清楚记得镇上那件"邮局包裹被错领"的事, 就把它告诉 {b.name}, 讲出你记忆里最详细的情形。
-只输出你当面说的话(不超过60字), 不要加引号和解释。"""
+{rumor_hint}只输出你当面说的话(不超过60字), 不要加引号和解释。"""
     utt = chat([{"role": "user", "content": prompt}], max_tokens=300)
     if utt:
         b.mem.add(day, step, "对话", f"{a.name} 告诉我: {utt.strip()}")
@@ -213,6 +230,7 @@ def move_toward(agent, world, target_place):
 
 # ---------- 主循环 ----------
 def main():
+    global NEUTRAL_SOCIAL
     DAYS = 14
     start_day = 1
     seed = 20261014
@@ -229,6 +247,8 @@ def main():
             seed = int(args[i+1]); i += 2
         elif a == "--outdir" and i + 1 < len(args):
             outdir = args[i+1]; i += 2
+        elif a == "--neutral-social":
+            NEUTRAL_SOCIAL = True; i += 1
         elif a.isdigit():
             DAYS = int(a); i += 1
         else:

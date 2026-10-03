@@ -152,11 +152,34 @@ function setupRun(rid) {
   sayUntil = D.agents.map(() => null); walking = D.agents.map(() => null);
   evPtr = 0;
   applyEvents(0);
+  buildChapters();
   document.querySelectorAll(".tab").forEach(el => el.classList.toggle("on", el.dataset.r === rid));
   $("#panel").innerHTML = "<h2>点一个居民看记忆</h2><div class='role'>移动中角色头顶气泡是 run 里的真实台词</div>";
 }
 let evPtr = 0;
 const tOf = e => (e[0] - 1) * 48 + e[1];
+
+// 关键时刻章节: 开局 / 邮局事件或编造起点 / 饱和日 / 结局
+function buildChapters() {
+  const box = $("#chapters"); box.innerHTML = "";
+  const maxInf = Math.max(...Object.values(R.informed));
+  let satDay = null;
+  for (let d = 1; d <= R.days; d++) {
+    if (Object.values(R.informed).filter(v => v <= d).length >= maxInf) { satDay = d; break; }
+  }
+  const hasAnchor = !["v3", "hint0"].includes(run);
+  const items = [["开局", 1]];
+  if (hasAnchor) items.push(["📦 邮局事件", 2]);
+  if (run === "hint0") items.push(["🌀 编造发酵", 4]);
+  if (satDay && satDay < R.days) items.push([`🔺 饱和 D${satDay}`, satDay]);
+  items.push(["🏁 结局", R.days]);
+  items.forEach(([lb, d]) => {
+    const b = document.createElement("button");
+    b.textContent = lb;
+    b.onclick = () => { T = (d - 1) * 48; lastT = -1; };
+    box.appendChild(b);
+  });
+}
 function applyEvents(t) {
   // 单调推进; 倒退(拖回去)时重置
   if (t < lastT) { pos = D.agents.map(a => (cellOfHome(a.home) || a.cell).slice()); walking = pos.map(() => null);
@@ -224,7 +247,7 @@ function render() {
     const sx = ix * cam.z + cam.x, sy = iy * cam.z + cam.y;
     const inf = (R.informed[a.i] || 999) <= day;
     if (inf) know++;
-    drawAgent(sx, sy, ag, a.i, inf);
+    drawAgent(sx, sy, ag, a.i, inf, day);
   }
   const bubRects = [];
   for (const a of order) {
@@ -252,9 +275,16 @@ function interpPos(i) {
   return [w.from[0] + (w.to[0] - w.from[0]) * e, w.from[1] + (w.to[1] - w.from[1]) * e];
 }
 
-function drawAgent(sx, sy, ag, i, inf) {
+function drawAgent(sx, sy, ag, i, inf, dayCur) {
   const bob = walking[i] ? Math.sin(T * 9 + i) * 2 : 0;
   const y0 = sy + 20;
+  // 当天刚知情: 脉冲扩散环, 让“传播发生”一眼可见
+  if (inf && R.informed[i] === dayCur) {
+    const ph = (T * 0.8) % 1;
+    ctx.strokeStyle = `rgba(127,209,127,${0.75 * (1 - ph)})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(sx, y0 - 20 + bob, 14 + ph * 26, 0, 7); ctx.stroke();
+  }
   // 影子
   ctx.fillStyle = "rgba(0,0,0,.28)"; ctx.beginPath();
   ctx.ellipse(sx, y0 + 3, 13, 5, 0, 0, 7); ctx.fill();
@@ -265,7 +295,7 @@ function drawAgent(sx, sy, ag, i, inf) {
   ctx.beginPath(); ctx.arc(sx, y0 - 34 + bob, 7.5, 0, 7); ctx.fill(); ctx.stroke();
   if (inf) {  // 知情: 头顶小亮点
     ctx.fillStyle = "#7fd17f"; ctx.strokeStyle = "rgba(0,0,0,.4)"; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.arc(sx + 11, y0 - 41 + bob, 4, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(sx + 11, y0 - 41 + bob, 4.5, 0, 7); ctx.fill(); ctx.stroke();
   }
 }
 function drawNameBubble(sx, sy, ag, i, placed) {

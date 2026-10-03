@@ -64,6 +64,10 @@
   #slider::-webkit-slider-thumb { -webkit-appearance:none; width:15px; height:15px;
                  border-radius:50%; background:#4d8dff; cursor:pointer; }
   #daylab { font-variant-numeric:tabular-nums; color:#c8d0de; min-width:130px; font-size:12.5px; }
+  #chapters { display:flex; gap:5px; }
+  #chapters button { background:#1c2230; color:#9fb3d1; border:1px solid #2a3348; border-radius:6px;
+                     padding:4px 9px; font-size:11px; cursor:pointer; white-space:nowrap; }
+  #chapters button:hover { background:#263248; color:#cfe0f5; }
   #hint { color:#5f6b82; font-size:11px; }
   @media (max-width: 820px) {
     #hud h1 { font-size:15px; }
@@ -77,6 +81,7 @@
              border-left:0; border-top:1px solid #232838; padding:10px; }
     #ctrl { right:0; height:56px; padding:0 10px; gap:8px; }
     #daylab { min-width:96px; font-size:11px; }
+    #chapters { display:none; }
     #hint { display:none; }
   }
 </style>
@@ -99,6 +104,7 @@
   <button class="ghost" id="spdBtn">8×</button>
   <input id="slider" type="range" min="0" max="1000" value="0">
   <span id="daylab">第 1 天</span>
+  <div id="chapters"></div>
   <span id="hint">拖时间轴 · 滚轮缩放 · 点人看记忆</span>
 </div>
 <div id="about"><div class="card">

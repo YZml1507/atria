@@ -260,39 +260,39 @@ function drawNameBubble(sx, sy, ag, i, placed) {
   ctx.textAlign = "center";
   // 名字: 缩得太小只显示选中的; 互撞的名字上移避让
   if (cam.z >= 0.34 || sel === i) {
-    ctx.font = "600 15px 'Noto Sans SC'";
+    ctx.font = "600 18px 'Noto Sans SC'";
     const nw = ctx.measureText(ag.name).width;
-    let ny = y0 - 46, nt = 0;
-    while (placed.some(q => sx - nw / 2 - 2 < q.x1 && sx + nw / 2 + 2 > q.x0 && ny - 17 < q.y1 && ny + 5 > q.y0) && nt < 3) {
-      ny -= 20; nt++;
+    let ny = y0 - 50, nt = 0;
+    while (placed.some(q => sx - nw / 2 - 2 < q.x1 && sx + nw / 2 + 2 > q.x0 && ny - 20 < q.y1 && ny + 6 > q.y0) && nt < 3) {
+      ny -= 24; nt++;
     }
-    placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 17, y1: ny + 5 });
-    ctx.lineWidth = 4; ctx.strokeStyle = "rgba(10,12,18,.75)";
+    placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
+    ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
     ctx.strokeText(ag.name, sx, ny);
-    ctx.fillStyle = sel === i ? "#ffd166" : "rgba(235,238,245,.95)";
+    ctx.fillStyle = sel === i ? "#ffd166" : "rgba(235,238,245,.97)";
     ctx.fillText(ag.name, sx, ny);
   }
   const s = sayUntil[i];
   if (s && T < s.until && s.txt) {
     const txt = s.txt.length > 20 ? s.txt.slice(0, 20) + "…" : s.txt;
-    ctx.font = "600 15px 'Noto Sans SC'";
-    const w = ctx.measureText(txt).width + 20;
+    ctx.font = "600 18px 'Noto Sans SC'";
+    const w = ctx.measureText(txt).width + 26;
     // 气泡水平钳进可视区(留出右侧面板)
     sx = Math.min(Math.max(sx, w / 2 + 10), innerWidth - 330 - w / 2);
-    let by = y0 - 78;
+    let by = y0 - 88;
     // 防重叠: 与已放气泡碰撞则上移一个槽位
-    const rect = () => ({ x0: sx - w / 2 - 3, x1: sx + w / 2 + 3, y0: by - 24, y1: by + 14 });
+    const rect = () => ({ x0: sx - w / 2 - 3, x1: sx + w / 2 + 3, y0: by - 30, y1: by + 17 });
     let r = rect(), tries = 0;
     while (placed.some(q => r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0) && tries < 6) {
-      by -= 30; r = rect(); tries++;
+      by -= 38; r = rect(); tries++;
     }
     placed.push(r);
     ctx.fillStyle = "rgba(252,252,254,.97)";
-    rr(sx - w / 2, by - 22, w, 26, 7); ctx.fill();
-    ctx.strokeStyle = "rgba(50,60,80,.65)"; ctx.lineWidth = 1.2; ctx.stroke();
-    ctx.fillStyle = "#1c2333"; ctx.fillText(txt, sx, by - 3);
+    rr(sx - w / 2, by - 27, w, 32, 8); ctx.fill();
+    ctx.strokeStyle = "rgba(50,60,80,.65)"; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.fillStyle = "#1c2333"; ctx.fillText(txt, sx, by - 4);
     ctx.fillStyle = "rgba(252,252,254,.97)";
-    ctx.beginPath(); ctx.moveTo(sx - 5, by + 4); ctx.lineTo(sx + 5, by + 4); ctx.lineTo(sx, by + 11); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(sx - 6, by + 5); ctx.lineTo(sx + 6, by + 5); ctx.lineTo(sx, by + 13); ctx.fill();
   }
 }
 function rr(x, y, w, h, r) {

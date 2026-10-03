@@ -66,9 +66,11 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 
 | 视频 | 内容 |
 |---|---|
-| `renders/atria_v6.mp4` | **主交付**：v2+v3 两条件完整对照（155 秒，四幕叙事结构） |
+| `renders/atria_v8.mp4` | **主交付**：3D 小镇开场/邮局事件 + 像素地图数据幕（四幕叙事 + 字幕） |
+| `renders/atria_v7.mp4` | 2D 版（四幕叙事 + 像素小镇画面 + 字幕） |
+| `renders/atria_v6.mp4` | 上一版（155 秒）：结尾音轨被截断、画面提示错位、无小镇画面，已被 v7 取代 |
 | `renders/atria_v5.mp4` | 两条件对照版（112 秒） |
-| `renders/atria_v4.mp4` | v2 单条件版（87 秒） |
+| `renders/atria_v4.mp4` | v2 单条件版（87 秒，像素地图版式沿用至 v7） |
 | `renders/atria_v3.mp4` | v3 零注入对照片段 |
 | `renders/atria_highlights.mp4` | 关键事件剪辑 |
 
@@ -77,6 +79,7 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 ## 诚实声明
 
 - 本实验**不是零干预**。v2 的初始记忆锚点为作者设定；v3 删除了全部信息锚点，是"零信息注入"而非"零人设注入"（25 人的姓名/职业/性格仍是手写的）
+- **v2 的社交步 prompt 含引导句**（`converse()`："如果你清楚记得邮局包裹被错领的事，就告诉他"），v3 没有这句——原对照混入了"prompt 引导"第二变量。已补实验（`experiment/v4-noprompt` 分支，`--neutral-social`）：**关掉引导后传闻仍在第 8 天饱和 25/25，但碎片转述降到 44/8/0**——引导句放大深度而非广度；"颜色 0 传播"的确定性结论在无引导下依然成立。见 `docs/REPORT_v4_noprompt.md`
 - v2 的三碎片结论仅在有锚点条件下成立；v3 未形成碎片对照，故"确定性决定存活"目前只在有锚点框架内有证据
 - 两轮均为单次运行，无 run-to-run 方差基线（v1/v2 同种子复跑 D1 得 79 vs 78 事件：复现的是秩序，不是数字）
 - 远程 LLM 端点同种子也不逐位确定
@@ -84,9 +87,16 @@ Atria 是一个 25 智能体的 AI 小镇（像素风，类 Smallville），用�
 ## 运行
 
 ```bash
+export ATRIA_LLM_KEY=sk-...        # LLM API key（也可放在 ~/.hermes/.env）
+export ATRIA_LLM_URL=https://...   # 可选，默认 discovery-api.intern-ai.org.cn
+export ATRIA_LLM_MODEL=...         # 可选，默认 Atria-Dawn-Preview
+
 python3 atri­a_engine.py 14 --seed 20261014 --outdir run_v2     # 跑 14 天（约 52 分钟）
+python3 atri­a_engine.py 14 --seed 20261014 --outdir run_np --neutral-social  # 关闭社交引导句
 python3 atri­a_verify.py run_v2                                  # 校验文档数字与数据一致
 ```
+
+视频渲染链：`tts_gen_v2.py`（edge-tts 生成逐句 mp3）→ `atria_track_v6.py`（拼接音轨 + 生成 timeline.json）→ `atria_video_v7.py`（pygame 渲染 + ffmpeg 合成）。旁白素材在 `narration_v6/`（39 段 mp3 + 合成音轨 + 时间轴）。
 
 快速浏览不必运行：直接看 `docs/REPORT_v3_unseeded.md`（v3 报告）与 `FINAL_REPORT.md`（v2 报告），或播放 `renders/atria_v4.mp4`。
 
@@ -98,9 +108,11 @@ atria_world.py       小镇世界（40×30 地图，32 地点）
 atria_personas.py    25 位居民人设
 atria_fragments.py   三碎片传播口径锁定（程序化判定规则）
 atria_verify.py      数据一致性校验（所有文档数字可溯源）
-atria_figures.py     v2 四张证据图 · atri­a_v3_figures.py  v3 三张
-atria_video_v4.py    pygame 视频渲染管线（字幕 + 旁白音轨同步）
+atria_figures.py     v2 四张证据图 · atri­a_v3_figures.py  v3 三张（在 experiment/v3-unseeded 分支）
+atria_video_v7.py    视频渲染管线 v7（四幕 + 像素小镇 + 字幕）；v6 已弃用保留溯源
+narration_v6/        旁白素材：39 段 mp3 + narration_track_v6.mp3 + timeline.json
 run_v2/              v2 数据（14 天事件 + 逐日记忆 + 日志）
+run_v4np/            v4-noprompt 数据（有锚点×关引导，14 天）
 run/                 v1 数据（同种子噪声基线）
 docs/                设计方案、实验报告、调研归档（15 份）
 docs/figures/        7 张证据图   renders/  视频

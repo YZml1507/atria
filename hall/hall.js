@@ -160,6 +160,7 @@ function setupRun(rid) {
 }
 let evPtr = 0;
 const tOf = e => (e[0] - 1) * 48 + e[1];
+const normTxt = s => s.replace(/[\s，。！？!?,.…—\-~“”‘’"'：:；;、（）()【】\[\]]/g, '');
 
 // 关键时刻章节: 开局 / 邮局事件或编造起点 / 饱和日 / 结局
 function buildChapters() {
@@ -207,11 +208,11 @@ function applyEvents(t) {
         const ls = lastSay[ai], cur = sayUntil[ai];
         if (cur && cur.txt === e[4] && tOf(e) < cur.until + 6) {
           cur.until = Math.max(cur.until, tOf(e) + 1.2);
-        } else if (!(ls && ls[e[4]])) {
+        } else if (!(ls && ls[normTxt(e[4])])) {
           const jit = (ai * 0.47) % 1.1;
           sayUntil[ai] = { txt: e[4], since: tOf(e) + jit,
             until: tOf(e) + jit + 2.0 + Math.min(4.0, e[4].length * 0.055) };
-          (lastSay[ai] = lastSay[ai] || {})[e[4]] = 1;
+          (lastSay[ai] = lastSay[ai] || {})[normTxt(e[4])] = 1;
         }
       }
     }

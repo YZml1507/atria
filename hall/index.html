@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" type="image/png" href="favicon.png">
 <title>安镇实验展厅 · Atria</title>
 <style>
   * { box-sizing: border-box; margin: 0; }
@@ -11,7 +10,22 @@
   #stage { position:absolute; inset:0; }
   canvas { display:block; }
   #hud { position:absolute; top:14px; left:16px; z-index:5; }
-  #hud h1 { font-size:19px; font-weight:600; letter-spacing:.5px; }
+  #hud h1 { font-size:19px; font-weight:600; letter-spacing:.5px; display:inline-block; }
+  #aboutBtn { display:inline-block; margin-left:9px; padding:1px 9px; border-radius:9px;
+              background:#1c2230; border:1px solid #2c3444; color:#9fc4ff; font-size:11.5px; cursor:pointer; }
+  #about { position:absolute; inset:0; z-index:20; background:#0b0d12e6; display:none;
+           align-items:center; justify-content:center; }
+  #about .card { max-width:620px; margin:20px; background:#141821; border:1px solid #2c3444;
+                 border-radius:12px; padding:26px 30px; font-size:13.5px; line-height:1.75; }
+  #about h2 { font-size:18px; margin-bottom:8px; }
+  #about table { border-collapse:collapse; margin:10px 0; font-size:12.5px; width:100%; }
+  #about td,#about th { border:1px solid #2c3444; padding:5px 10px; text-align:center; }
+  #about th { background:#1a1f2b; }
+  #about .k { color:#7fd17f; font-weight:600; }
+  #about .warn { color:#d8a24a; }
+  #about .close { margin-top:12px; background:#2b4a7a; color:#fff; border:0; border-radius:7px;
+                  padding:7px 18px; font-size:13px; cursor:pointer; }
+  #about a { color:#6ea8ff; }
   #hud .sub { color:#8b93a3; font-size:12px; margin-top:2px; }
   #tabs { display:flex; gap:6px; margin-top:10px; }
   .tab { padding:5px 12px; border-radius:7px; background:#171b24; border:1px solid #262c3a;
@@ -70,7 +84,7 @@
 <body>
 <div id="stage"><canvas id="cv"></canvas></div>
 <div id="hud">
-  <h1>安镇 · 信息传播实验展厅</h1>
+  <h1>安镇 · 信息传播实验展厅</h1><span id="aboutBtn">ⓘ 关于实验</span>
   <div class="sub">25 个 LLM 居民 · 同引擎同种子 · 只差一个变量</div>
   <div id="tabs"></div>
 </div>
@@ -87,6 +101,27 @@
   <span id="daylab">第 1 天</span>
   <span id="hint">拖时间轴 · 滚轮缩放 · 点人看记忆</span>
 </div>
+<div id="about"><div class="card">
+  <h2>安镇：一个可回放的 LLM 信息传播实验</h2>
+  <div>25 个由 Atria-Dawn 驱动的居民住在这座镇里：他们有作息、会串门、记得谁说过什么。我们用它做了一组 <b>2×2 受控实验</b>——只切两个变量：<b>记忆锚点</b>（6 人持有"包裹错领"事件碎片）× <b>引导句</b>（prompt 里"如果你记得就告诉他"）。</div>
+  <table>
+    <tr><th></th><th>有引导句</th><th>无引导句</th></tr>
+    <tr><th>有锚点</th><td>v2：25/25 @D9</td><td>v4：25/25 @D8/D9 (两种子)</td></tr>
+    <tr><th>零锚点</th><td class="warn">hint0：25/25 @D8 —— 全镇集体编造</td><td class="k">v3：4/25 停滞 (35 天)</td></tr>
+  </table>
+  <div><b>引导即播种</b>：零锚点+有引导时包裹从未存在，居民却顺着引导语"回忆"出完整包裹案并传遍全镇——传闻不靠事实传播，靠问题传播。</div>
+  <div style="color:#8b93a3;font-size:12px;margin-top:10px">玩法：左上角切换五轮真实 run；拖底部时间轴回放 14 天走位与台词气泡；点任意居民看 TA 的人设与传闻记忆流；右上角曲线是当日知情人数。源码与数据：<a href="https://github.com/YZml1507/atria" target="_blank">github.com/YZml1507/atria</a></div>
+  <button class="close" id="aboutClose">进展厅 ▶</button>
+</div></div>
 <script src="hall.js"></script>
+<script>
+  const _ab = document.getElementById('about');
+  const _showAbout = () => _ab.style.display = 'flex';
+  const _hideAbout = () => _ab.style.display = 'none';
+  document.getElementById('aboutBtn').onclick = _showAbout;
+  document.getElementById('aboutClose').onclick = _hideAbout;
+  _ab.onclick = e => { if (e.target === _ab) _hideAbout(); };
+  if (!location.search.includes('play') && !location.search.includes('t=')) _showAbout();
+</script>
 </body>
 </html>

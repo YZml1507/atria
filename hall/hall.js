@@ -286,7 +286,8 @@ function drawNameBubble(sx, sy, ag, i, placed) {
       nt++;
     }
     sx = nx;
-    if (tryPos()) { /* 避让失败: 跳过名字防叠读 */ } else {
+    const underHud = sel !== i && nx - nw / 2 < 470 && ny < 132;   // 左上角 HUD 区域不画名字
+    if (tryPos() || underHud) { /* 避让失败/遮挡HUD: 跳过名字防叠读 */ } else {
     placed.push({ x0: sx - nw / 2 - 2, x1: sx + nw / 2 + 2, y0: ny - 20, y1: ny + 6 });
     ctx.lineWidth = 5; ctx.strokeStyle = "rgba(10,12,18,.8)";
     ctx.strokeText(ag.name, sx, ny);

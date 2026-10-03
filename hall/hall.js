@@ -182,13 +182,15 @@ function buildChapters() {
   items.forEach(([lb, d]) => {
     const b = document.createElement("button");
     b.textContent = lb;
-    b.onclick = () => { T = (d - 1) * 48; lastT = -1; };
+    b.onclick = () => { T = (d - 1) * 48; lastT = -1;
+      if (lb.includes("邮局")) { const p = D.places.find(p => p.name === "邮局");
+        if (p) poiFlash = { x: (p.box[0] + p.box[2]) / 2 + .5, y: p.box[3] + .7, t0: performance.now() }; } };
     b._day = d;
     box.appendChild(b);
     chapterBtns.push(b);
   });
 }
-let chapterBtns = [];
+let chapterBtns = [], poiFlash = null;
 function applyEvents(t) {
   // 单调推进; 倒退(拖回去)时重置
   if (t < lastT) { pos = D.agents.map(a => (cellOfHome(a.home) || a.cell).slice()); walking = pos.map(() => null);
@@ -280,6 +282,21 @@ function render() {
     const k = cellIdx[a.i];
     const dx = k > 0 ? (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 46 : 0;
     drawNameBubble(ix * cam.z + cam.x + dx, iy * cam.z + cam.y - k * 8, ag, a.i, bubRects, ix * cam.z + cam.x);
+  }
+  if (poiFlash) {
+    const age = (performance.now() - poiFlash.t0) / 1000;
+    if (age > 8) poiFlash = null;
+    else {
+      const [fx, fy] = iso(poiFlash.x, poiFlash.y);
+      const fsx = fx * cam.z + cam.x, fsy = fy * cam.z + cam.y;
+      const ph = (age % 1.2) / 1.2, al = (1 - ph) * (age > 3 ? (4 - age) : 1);
+      ctx.strokeStyle = `rgba(255,209,102,${.85 * al})`; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(fsx, fsy + 14, 14 + ph * 46, 0, 7); ctx.stroke();
+      ctx.strokeStyle = `rgba(255,209,102,${.5 * al})`;
+      ctx.beginPath(); ctx.arc(fsx, fsy + 14, 7, 0, 7); ctx.stroke();
+      ctx.font = "700 14px 'Noto Sans SC'"; ctx.textAlign = "center";
+      ctx.fillStyle = `rgba(255,209,102,${al})`; ctx.fillText("📦 邮局事件", fsx, fsy - 52);
+    }
   }
   const dayCur = Math.min(Math.floor(T / 48) + 1, R.days);
   const stepCur = Math.floor(T % 48);

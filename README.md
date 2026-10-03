@@ -52,6 +52,7 @@
 **③ 零注入会产生信息，但长不大。** v3 中居民 D1 即兴虚构"镇中新来了一户人家"——不存在于任何设定。35 天被提及 167 次、触达 4 人，但从未产生实质内容：所有台词都是提问（"你听说没？"），从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
 
 <p align="center">
+  <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
@@ -93,10 +94,10 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 
 | 资产 | 说明 |
 |---|---|
-| [在线展厅](https://yzml1507.github.io/atria/hall/) | 等距小镇回放 + 5 run 对照 + 居民记忆面板 |
+| [在线展厅](https://yzml1507.github.io/atria/hall/) | 等距小镇回放 + 6 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v9.mp4` | 主视频（116s）：展厅实演 + 2×2 结果 + 引导即播种 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
-| `docs/figures/` | 7 张程序化生成证据图 |
+| `docs/figures/` | 9 张程序化生成证据图 |
 | `docs/` | 设计方案、实验报告、调研归档（15 份） |
 
 ## 仓库结构

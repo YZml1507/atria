@@ -6,7 +6,7 @@
 
 <div align="center">
 
-**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v13.mp4)** (170s) · **[📄 实验报告](docs/REPORT_v4_noprompt.md)**
+**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v13.mp4)** (170s) · **[📄 实验报告](docs/REPORT.md)**
 
 拖时间轴回放五轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
@@ -101,7 +101,7 @@ python3 atria_verify.py run_v2                                           # 校�
 - 每格条件样本量 n≥2：四格全部复现（v4np 两种子、hint0 两种子+银元泛化、v3 三种子 4/19/9）
 - 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
 - v2 的三碎片结论仅在有锚点条件下成立
-- 全部方法学细节与逐 run 数据见 `docs/REPORT_v4_noprompt.md`、`docs/REPORT_v3_unseeded.md`、`FINAL_REPORT.md`
+- 全部方法学细节与逐 run 数据见 `docs/REPORT.md`（统一实验报告）、`docs/METHODOLOGY.md`
 
 ## 与文献的关系
 
@@ -111,7 +111,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 
 | 资产 | 说明 |
 |---|---|
-| [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 6 run 对照 + 传播链路叠加 + 居民记忆面板 |
+| [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 12 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v13.mp4` | 主视频（170s）：展厅实演 + 2×2 结果 + 引导即播种 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
 | `docs/figures/` | 9 张程序化生成证据图 |
@@ -128,7 +128,8 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
-run_v2/  run_v2s2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/  run_hint0g/   十轮完整实验数据
+run_v2/  run_v2s2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/
+run_hint0/  run_hint0s2/  run_hint0g/  run_multi/  run_debunk/   十二轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 
@@ -137,4 +138,4 @@ docs/                报告与图   renders/  视频
 ## 引用与许可
 
 MIT License。素材：Kenney Sketch Town (CC0) + 程序化生成。音乐：Deliberate Thought — Kevin MacLeod (CC BY 4.0)。
-若引用本实验，请参考 `FINAL_REPORT.md` 的口径定义。
+若引用本实验，请参考 `docs/REPORT.md` 的口径定义。

@@ -58,5 +58,5 @@
 | 引擎 | `atria_engine.py`（`--neutral-social` 切 B 变量） |
 | 人设/世界 | `atria_personas.py` / `atria_world.py` |
 | 校验 | `atria_verify.py`（`python3 atria_verify.py run_v2`） |
-| 报告 | `FINAL_REPORT.md`（v2）· `docs/REPORT_v3_unseeded.md`（v3）· `docs/REPORT_v4_noprompt.md`（2×2 总报告） |
+| 报告 | `docs/REPORT.md`（统一实验报告，全部 12 轮） |
 | 展厅数据 | `hall/export_data.py` → `hall/data.json`（由原始 run 重新生成） |

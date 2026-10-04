@@ -576,5 +576,22 @@ fetch("data.json").then(r => r.json()).then(async d => {
     }, 9000);
   }
   if (q.get("speed")) { speed = Math.min(64, Math.max(1, +q.get("speed") || 8)); $("#spdBtn").textContent = speed + "×"; }
+  // 遥控钩子: 若 hall/ 下存在 cmd.json 则每 0.7s 应用一次指令 (录制/演示脚本用; 无文件时静默)
+  let lastCmd = null;
+  setInterval(() => {
+    fetch("cmd.json?_=" + Date.now()).then(r => r.ok ? r.json() : null).then(c => {
+      if (!c || c.seq === lastCmd) return; lastCmd = c.seq;
+      if (c.run && run !== c.run) setupRun(c.run);
+      if (c.t != null) { T = Math.min(R.days * 48 - 1, +c.t); lastT = -1; }
+      if (c.sel != null) { const si = isNaN(+c.sel) ? D.agents.findIndex(a => a.name === c.sel) : +c.sel; if (si >= 0) { showAgent(si); follow = si; focusAgent(si); } }
+      if (c.z != null) cam.z = Math.min(3.2, Math.max(0.5, +c.z));
+      if (c.cam) camTarget = { x: c.cam[0], y: c.cam[1] };
+      if (c.center) { const [ix, iy] = iso(12.5, 12.5); camTarget = { x: (innerWidth - panelW()) / 2 - ix * cam.z, y: innerHeight * .45 - iy * cam.z }; }
+      if (c.play != null) { playing = !!c.play; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; }
+      if (c.speed) { speed = Math.min(64, Math.max(1, +c.speed)); $("#spdBtn").textContent = speed + "×"; }
+      if (c.net != null) { showNet = !!c.net; $("#netBtn").style.opacity = showNet ? 1 : .45; }
+      if (c.deselect) { sel = -1; follow = -1; $("#panel").innerHTML = ""; }
+    }).catch(() => {});
+  }, 700);
   requestAnimationFrame(loop);
 });

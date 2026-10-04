@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="七轮 run 的知情人数曲线：五格饱和 vs 零注入两种子均未饱和" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="九轮 run 的知情人数曲线：五格饱和 vs 零注入三种子均未饱和" width="760">
 </p>
 
 ---
@@ -31,9 +31,11 @@
 | | 有引导句 | 无引导句 |
 |---|---|---|
 | **有锚点** | v2：**25/25**，第 9 天饱和 | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
-| **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现，n=2）—— **全镇集体编造** | v3：**4/25 与 19/25**（两种子、35 天、均未饱和） |
+| **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现）+ **银元泛化 24/25**（换传闻仍编圆）—— **全镇集体编造** | v3：**4、19、9/25**（三种子、35 天、均未饱和） |
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
+
+**刺激泛化验证**：把传闻客体换成"镇外山道挖出一坛银元"重跑同格条件（hint0g，14 天），结果 24/25 知情、72 条首传边——全镇照样集体编圆，**编造不依赖特定刺激内容**。唯一未达标的张石匠只记住了"都传遍了，就你闷在石场里"的元指涉对话——他听见了传闻的存在，却从未被告知内容。
 
 <p align="center">
   <img src="docs/figures/fig9_hint0_fabrication.png" alt="hint0 编造词逐日频次：从无到有，第6天起每天40+次" width="640">
@@ -53,11 +55,11 @@
 
 **② 引导句放大深度而非广度。** 关掉引导句后饱和速度几乎不变（D8/D9 vs D9），但碎片转述量降至约 1/4（164/30/0 → 44/8/0）。引导不是必要条件，是扩音器。
 
-**③ 零注入会产生信息，但长不大。** v3 两个种子下居民都在 D1 即兴虚构"镇中新来了一户人家"——不存在于任何设定。s1 中 35 天触达 4 人、s2 触达 19 人但传播链稀疏（3 与 36 条首传边 vs 注入组 78–127），均未饱和：所有台词都是提问（"你听说没？"），从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
+**③ 零注入会产生信息，但长不大。** v3 三个种子各自即兴虚构出不存在的传闻——s1/s2 是"镇中新来一户人家"，s3 是"周家丫头出嫁"。35 天触达 4 / 19 / 9 人、首传边 3 / 36 / 6 条（vs 注入组 72–127），三种子均未饱和：所有台词都是提问（"你听说没？"），s1 从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
-  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：五格 78–127 条 vs 零注入 s1 3 条 / s2 36 条" width="760"><br>
+  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：六格 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
@@ -81,19 +83,19 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-七轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v3s2 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+九轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 局限与复现边界
 
 - 本实验**不是零干预**：v2/v4 的初始记忆锚点为作者设定；"零注入"指零信息注入，非零人设注入
-- 每格条件样本量 n=2：四格全部双种子复现（v4np D8/D9、hint0 D8/D13、v3 4/25 与 19/25）
+- 每格条件样本量 n≥2：四格全部复现（v4np 两种子、hint0 两种子+银元泛化、v3 三种子 4/19/9）
 - 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
 - v2 的三碎片结论仅在有锚点条件下成立
 - 全部方法学细节与逐 run 数据见 `docs/REPORT_v4_noprompt.md`、`docs/REPORT_v3_unseeded.md`、`FINAL_REPORT.md`
 
 ## 与文献的关系
 
-Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 105 天总时长。
+Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 189 天总时长。
 
 ## 资源
 
@@ -116,7 +118,7 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
-run_v2/  run_v3/  run_v3s2/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/   七轮完整实验数据
+run_v2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/  run_hint0g/   九轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 

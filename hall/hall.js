@@ -490,16 +490,17 @@ const esc = s => s.replace(/[<>&]/g, c => ({ "<": "&lt;", ">": "&gt;", "&": "&am
 
 // ---------- 交互 ----------
 let drag = null;
+function dbg(s) { let d = document.getElementById("dbg"); if (!d) { d = document.createElement("div"); d.id = "dbg"; d.style.cssText = "position:fixed;left:8px;top:180px;background:#000a;color:#ff0;font:20px monospace;padding:8px;z-index:99999"; document.body.appendChild(d); } d.textContent = s; }
 cv.addEventListener("mousedown", e => drag = { x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y, moved: 0 });
 addEventListener("mousemove", e => {
   if (!drag) return;
   camTarget = null; follow = -1;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-  if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = 1;
+  if (Math.abs(dx) + Math.abs(dy) > 8) drag.moved = 1;
   cam.x = drag.cx + dx; cam.y = drag.cy + dy;
 });
 addEventListener("mouseup", e => {
-  if (drag && !drag.moved) pickAgent(e.clientX, e.clientY); drag = null;
+  if (drag && !drag.moved) { try { pickAgent(e.clientX, e.clientY); } catch (err) { if (location.hash.includes("dbg")) dbg(`pickAgent throw: ${err.message}`); } } else if (drag && location.hash.includes("dbg")) dbg(`moved up(${e.clientX},${e.clientY})`); drag = null;
 });
 cv.addEventListener("wheel", e => {
   e.preventDefault();
@@ -514,8 +515,9 @@ function pickAgent(px, py) {
     const d = Math.hypot(sx - lx, sy + 14 - ly);
     if (d < bd) { bd = d; best = i; }
   });
-  if (bd < 30) { showAgent(best); follow = best; focusAgent(best); }
+  if (bd < 26 / cam.z) { showAgent(best); follow = best; focusAgent(best); }
   else { sel = -1; follow = -1; }
+  if (location.hash.includes("dbg")) dbg(`pick(${px},${py}) bd=${bd.toFixed(1)} z=${cam.z.toFixed(2)} sel=${best}`);
 }
 function focusAgent(i) {
   const p = interpPos(i); const [ix, iy] = iso(p[0], p[1]);
@@ -561,7 +563,8 @@ fetch("data.json").then(r => r.json()).then(async d => {
   const q = new URLSearchParams(location.search);
   setupRun(q.get("run") || "v2");
   if (q.get("t")) { T = Math.min(R.days * 48 - 1, parseFloat(q.get("t"))); lastT = -1; }
-  if (q.get("sel") != null) { const si = +q.get("sel"); if (si >= 0 && si < 25) showAgent(si); }
+  if (q.get("sel") != null) { const sq = q.get("sel"); const si = isNaN(+sq) ? D.agents.findIndex(a => a.name === sq) : +sq; if (si >= 0 && si < 25) showAgent(si); }
+  if (q.get("z")) { cam.z = Math.min(3.2, Math.max(0.5, +q.get("z"))); }
   if (q.has("play")) { playing = true; $("#playBtn").textContent = "⏸ 暂停"; }
   if (q.has("tour")) {
     playing = true; $("#playBtn").textContent = "⏸ 暂停";

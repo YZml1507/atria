@@ -45,7 +45,7 @@
   <img src="docs/figures/fig9_hint0_fabrication.png" alt="hint0 编造词逐日频次：从无到有，第6天起每天40+次" width="640">
 </p>
 
-## 三个关键发现
+## 四个关键发现
 
 **① 措辞确定性决定碎片存活。** 三位目击者持有同一事件的碎片，措辞确定性不同：
 
@@ -61,9 +61,12 @@
 
 **③ 零注入会产生信息，但长不大。** v3 三个种子各自即兴虚构出不存在的传闻——s1/s2 是"镇中新来一户人家"，s3 是"周家丫头出嫁"。35 天触达 4 / 19 / 9 人、首传边 3 / 36 / 6 条（vs 注入组 72–127），三种子均未饱和：所有台词都是提问（"你听说没？"），s1 从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
 
+**④ 双传闻竞争：有锚者赢家通吃。** multi 轮让引导句同时提"包裹错领"（有锚）与"山道银元"（零锚、纯编造）：包裹 14 天 25/25 饱和、银元只到 2/25——单独跑能编圆全镇的传闻，在有锚对手面前几乎绝迹。**集体编造需要一个空的信息生态位**——这是"引导即播种"的边界条件。
+
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
-  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：六格 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
+  <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：注入组 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
+  <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争：包裹(有锚)25/25 vs 银元(零锚)2/25" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
@@ -87,7 +90,7 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-十轮 run 的原始数据全部入库：`run_v2 / run_v2s2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+十一轮 run 的原始数据全部入库：`run_v2 / run_v2s2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g / run_multi`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 局限与复现边界
 
@@ -99,7 +102,7 @@ python3 atria_verify.py run_v2                                           # 校�
 
 ## 与文献的关系
 
-Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 203 天总时长。
+Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 217 天总时长。
 
 ## 资源
 

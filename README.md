@@ -1,6 +1,6 @@
 # Atria — 安镇：LLM 小镇中的受控信息传播实验
 
-> 25 agents · 105 天对照实验 · 8,300+ 起事件 · 运行期零人工干预
+> 25 agents · 12 轮 run · 231 模拟日 · ~16,000 起事件 · 运行期零人工干预
 
 **A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded six of them with fragments of an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
@@ -8,14 +8,14 @@
 
 **[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v15.mp4)** (51s) · **[📄 实验报告](docs/REPORT.md)**
 
-拖时间轴回放五轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
+拖时间轴回放十二轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
 **60 秒看懂本实验**：进展厅 → 点底部「📦 邮局事件」看传闻起点 → 点「🔺 饱和」跳到第 8 天 → 左上角切到「v3 零注入」看同镇 35 天停在 4/25 → 再切「v4 零锚+引」看没有锚点的镇子如何集体编造出同一个包裹案。
 
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="十轮 run 的知情人数曲线：六格饱和 vs 零注入三种子均未饱和" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="十二轮 run 的知情人数曲线：六格饱和 vs 零注入三种子均未饱和" width="760">
 </p>
 
 ---
@@ -34,7 +34,7 @@
 | **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现）+ **银元泛化 24/25**（换传闻仍编圆）—— **全镇集体编造** | v3：**4、19、9/25**（三种子、35 天、均未饱和） |
 
 <p align="center">
-  <img src="docs/figures/fig12_runs_overview.png" alt="十轮 run 对比：注入/引导条件全体饱和，零注入三种子无一饱和" width="760">
+  <img src="docs/figures/fig12_runs_overview.png" alt="十二轮 run 对比：注入/引导条件全体饱和，零注入三种子无一饱和" width="760">
 </p>
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
@@ -66,7 +66,7 @@
 **⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件，第 7 天（传闻刚 25/25 饱和后）向全镇注入镇公所公告"同名误传、包裹已取回"：提及传闻的活跃人数从 ~14–19 人/天腰斩到 ~7–10 人/天，但归零失败——**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
 
 <p align="center">
-  <img src="docs/figures/fig10_diffusion_network.png" alt="首传树：v2 18 条首传箭头 vs v3 零星孤点" width="760"><br>
+  <img src="docs/figures/fig10_diffusion_network.png" alt="六轮首传树对比：v2/hint0/hint0g 密网、multi 16金vs1紫、debunk 腰斩前、v3 孤边" width="760"><br>
   <img src="docs/figures/fig10b_adjacency.png" alt="25×25 转述邻接矩阵：谁告诉过谁（对数热度）" width="760"><br>
   <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：注入组 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
   <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争：包裹(有锚)25/25 vs 银元(零锚)2/25" width="760"><br>

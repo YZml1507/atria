@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>安镇实验展厅 · Atria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
   * { box-sizing: border-box; margin: 0; }
   body { background:#0d0f14; color:#dfe3ea; font:14px/1.5 "Noto Sans SC","PingFang SC",sans-serif; overflow:hidden; }
   #stage { position:absolute; inset:0; }
-  canvas { display:block; }
+  canvas { display:block; touch-action:none; }
   #hud { position:absolute; top:14px; left:16px; z-index:5; }
   #hud h1 { font-size:19px; font-weight:600; letter-spacing:.5px; display:inline-block; }
   #aboutBtn { display:inline-block; margin-left:9px; padding:1px 9px; border-radius:9px;
@@ -128,7 +128,7 @@
   <span id="daylab">第 1 天</span>
   <button class="ghost" id="netBtn" title="切换传播链路叠加层">🕸 链路</button>
   <div id="chapters"></div>
-  <span id="hint">拖时间轴 · 滚轮缩放 · 点人看记忆</span>
+  <span id="hint">拖时间轴 · 滚轮缩放/单指拖动·双指缩放 · 点人看记忆</span>
 </div>
 <div id="about"><div class="card">
   <h2>安镇：一个可回放的 LLM 信息传播实验</h2>

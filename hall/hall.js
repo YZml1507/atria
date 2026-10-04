@@ -507,6 +507,52 @@ cv.addEventListener("wheel", e => {
   const k = e.deltaY < 0 ? 1.12 : 0.9;
   cam.z = Math.min(3.2, Math.max(0.5, cam.z * k));
 }, { passive: false });
+
+// ---------- 触摸: 单指平移 / 双指捏合缩放(锚=两指中点) / 轻点选人 ----------
+let tPan = null, tPinch = null, tMoved = false;
+cv.addEventListener("touchstart", e => {
+  e.preventDefault();
+  if (e.touches.length === 1) {
+    const t = e.touches[0];
+    tPan = { x: t.clientX, y: t.clientY, cx: cam.x, cy: cam.y }; tPinch = null; tMoved = false;
+  } else if (e.touches.length === 2) {
+    const [a, b] = [e.touches[0], e.touches[1]];
+    tPinch = { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY), z: cam.z,
+               cx: cam.x, cy: cam.y, mx: (a.clientX + b.clientX) / 2, my: (a.clientY + b.clientY) / 2 };
+    tPan = null; tMoved = true;
+  }
+}, { passive: false });
+cv.addEventListener("touchmove", e => {
+  e.preventDefault();
+  if (tPinch && e.touches.length === 2) {
+    const [a, b] = [e.touches[0], e.touches[1]];
+    const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    const mx = (a.clientX + b.clientX) / 2, my = (a.clientY + b.clientY) / 2;
+    const z0 = tPinch.z, z1 = Math.min(3.2, Math.max(0.5, z0 * d / tPinch.d));
+    // 捏合锚点 = 初始两指中点: 该处世界坐标在缩放前后尽量不动 + 中点位移即平移
+    const lx = (tPinch.mx - tPinch.cx) / z0, ly = (tPinch.my - tPinch.cy) / z0;
+    cam.z = z1;
+    cam.x = tPinch.mx - lx * z1; cam.y = tPinch.my - ly * z1;
+    camTarget = null; follow = -1;
+  } else if (tPan && e.touches.length === 1) {
+    const t = e.touches[0];
+    const dx = t.clientX - tPan.x, dy = t.clientY - tPan.y;
+    if (Math.abs(dx) + Math.abs(dy) > 10) tMoved = true;
+    cam.x = tPan.cx + dx; cam.y = tPan.cy + dy;
+    camTarget = null; follow = -1;
+  }
+}, { passive: false });
+cv.addEventListener("touchend", e => {
+  e.preventDefault();
+  if (e.touches.length === 0) {
+    if (tPan && !tMoved) { const t = e.changedTouches[0]; try { pickAgent(t.clientX, t.clientY); } catch (_) {} }
+    tPan = tPinch = null; tMoved = false;
+  } else if (e.touches.length === 1) {
+    // 双指收回到单指: 重新以当前单指位置为平移基准, 避免跳变
+    const t = e.touches[0];
+    tPan = { x: t.clientX, y: t.clientY, cx: cam.x, cy: cam.y }; tPinch = null;
+  }
+}, { passive: false });
 function pickAgent(px, py) {
   const lx = (px - cam.x) / cam.z, ly = (py - cam.y) / cam.z;
   let best = null, bd = 1e9;

@@ -496,7 +496,7 @@ addEventListener("mousemove", e => {
   if (!drag) return;
   camTarget = null; follow = -1;
   const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-  if (Math.abs(dx) + Math.abs(dy) > 8) drag.moved = 1;
+  if (Math.abs(dx) + Math.abs(dy) > 30) drag.moved = 1;
   cam.x = drag.cx + dx; cam.y = drag.cy + dy;
 });
 addEventListener("mouseup", e => {

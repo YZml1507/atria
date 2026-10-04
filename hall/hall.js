@@ -554,7 +554,7 @@ fetch("data.json").then(r => r.json()).then(async d => {
   const tabs = $("#tabs");
   Object.keys(D.runs).forEach(rid => {
     const b = document.createElement("div"); b.className = "tab"; b.dataset.r = rid;
-    const short = { "v2": "v2 锚+引", "v4np": "v4 锚·无引", "v4np2": "v4 种子2", "v3": "v3 零注入", "v3s2": "v3 零·种子2", "v3s3": "v3 零·种子3", "hint0": "v4 零锚+引", "hint0s2": "v4 零锚·种子2", "hint0g": "v4 零锚·银元" };
+    const short = { "v2": "v2 锚+引", "v4np": "v4 锚·无引", "v4np2": "v4 种子2", "v3": "v3 零注入", "v3s2": "v3 零·种子2", "v3s3": "v3 零·种子3", "hint0": "v4 零锚+引", "hint0s2": "v4 零锚·种子2", "hint0g": "v4 零锚·银元", "v2s2": "v2 锚+引·种子2" };
     b.innerHTML = `${short[rid] || D.runs[rid].label}<br><span class="n">${Object.keys(D.runs[rid].informed).length}/25 知情</span>`;
     b.onclick = () => setupRun(rid); tabs.appendChild(b);
   });

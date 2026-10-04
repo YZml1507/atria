@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="九轮 run 的知情人数曲线：五格饱和 vs 零注入三种子均未饱和" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="十轮 run 的知情人数曲线：六格饱和 vs 零注入三种子均未饱和" width="760">
 </p>
 
 ---
@@ -30,7 +30,7 @@
 
 | | 有引导句 | 无引导句 |
 |---|---|---|
-| **有锚点** | v2：**25/25**，第 9 天饱和 | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
+| **有锚点** | v2：**25/25**，第 9/14 天饱和（两种子复现，n=2） | v4-np：**25/25**，第 8/9 天饱和（两种子复现，n=2） |
 | **零锚点** | hint0：**25/25**，第 8/13 天饱和（两种子复现）+ **银元泛化 24/25**（换传闻仍编圆）—— **全镇集体编造** | v3：**4、19、9/25**（三种子、35 天、均未饱和） |
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案——查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 这也说明 v2 的 25/25 在相当程度上可归因于每日 prompt 引导，而非纯粹涌现——这是本实验最重要的诚实修正。
@@ -83,7 +83,7 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-九轮 run 的原始数据全部入库：`run_v2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+十轮 run 的原始数据全部入库：`run_v2 / run_v2s2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 局限与复现边界
 
@@ -95,7 +95,7 @@ python3 atria_verify.py run_v2                                           # 校�
 
 ## 与文献的关系
 
-Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 189 天总时长。
+Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**——最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 203 天总时长。
 
 ## 资源
 
@@ -118,7 +118,7 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
-run_v2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/  run_hint0g/   九轮完整实验数据
+run_v2/  run_v2s2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/  run_hint0/  run_hint0s2/  run_hint0g/   十轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 

@@ -66,7 +66,8 @@
 **⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件，第 7 天（传闻刚 25/25 饱和后）向全镇注入镇公所公告"同名误传、包裹已取回"：提及传闻的活跃人数从 ~14–19 人/天腰斩到 ~7–10 人/天，但归零失败——**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
 
 <p align="center">
-  <img src="docs/figures/fig10_diffusion_network.png" alt="首传链路图：v2/hint0 密网 vs v3 仅 3 条边" width="760"><br>
+  <img src="docs/figures/fig10_diffusion_network.png" alt="首传树：v2 18 条首传箭头 vs v3 零星孤点" width="760"><br>
+  <img src="docs/figures/fig10b_adjacency.png" alt="25×25 转述邻接矩阵：谁告诉过谁（对数热度）" width="760"><br>
   <img src="docs/figures/fig11_edge_growth.png" alt="累计首次转述边数：注入组 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
   <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争：包裹(有锚)25/25 vs 银元(零锚)2/25" width="760"><br>
   <img src="docs/figures/fig14_debunk.png" alt="辟谣干预：第7天公告后提及率腰斩但未归零" width="760"><br>

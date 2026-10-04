@@ -411,7 +411,7 @@ function drawNameBubble(sx, sy, ag, i, placed, ox) {
   }
   const s = sayUntil[i];
   if (s && T >= (s.since || 0) && T < s.until && s.txt) {
-    const fade = Math.min(1, (T - (s.since || 0)) / 0.35, (s.until - T) / 0.6);
+    const fade = Math.min(1, (T - (s.since || 0)) / 0.12, (s.until - T) / 0.15);
     ctx.save(); ctx.globalAlpha = Math.max(0, fade);
     const txt = s.txt.length > 22 ? s.txt.slice(0, 22) + "…" : s.txt;
     ctx.font = "700 13px 'Noto Sans SC'";

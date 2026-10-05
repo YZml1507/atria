@@ -2,7 +2,7 @@
 
 > 25 agents · 12 轮 run · 231 模拟日 · ~16,000 条事件 · 运行期零人工干预
 
-**A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded six of them with fragments of an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
+**A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded ten of them with `currently` hooks about an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
 <div align="center">
 
@@ -51,9 +51,9 @@
 
 | 碎片 | 措辞 | 14 天后被传递次数（有引导 / 无引导） |
 |---|---|---|
-| 扳指 | "戴旧扳指"（具体） | 164 / 44 |
-| 方向 | "抱纸箱往镇东头走"（半具体） | 30 / 8 |
-| 颜色 | "衣裳偏浅，好像灰色"（不确定） | 0 / 0 |
+| 扳指 | "手上戴着个旧扳指"（具体） | 164 / 44 |
+| 方向 | "抱着纸箱往镇东头走"（半具体） | 30 / 8 |
+| 颜色 | "衣裳颜色偏浅，好像是灰色"（不确定） | 0 / 0 |
 
 措辞不确定的碎片被传播链**静默丢弃**，且在有无引导两种条件下结论一致。最直接的例证是周老师本人：她持有颜色碎片，14 天 35 次发言没有 1 次提颜色，全部追随具体线索。
 
@@ -63,7 +63,7 @@
 
 **④ 双传闻竞争：有锚者赢家通吃。** multi 轮让引导句同时提"包裹错领"（有锚）与"山道银元"（零锚、纯编造）：包裹 14 天 25/25 饱和、银元只到 2/25：这条单独跑时能传遍全镇的编造传闻，在有锚对手面前几乎绝迹。**集体编造需要一个空的信息生态位**，是"引导即播种"的边界条件。
 
-**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件，第 7 天（传闻刚 25/25 饱和后）向全镇注入镇公所公告"同名误传、包裹已取回"：提及传闻的活跃人数从 ~14–19 人/天减半到 ~7–10 人/天，但归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
+**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件，第 7 天（传闻刚 25/25 饱和后）向全镇注入镇公所公告"同名误传、包裹已取回"：提及传闻的活跃人数从公告前爬升段的 11–19 人/天降至 7–10 人/天，但归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="六轮首传树对比：v2/hint0/hint0g 密网、multi 16金vs1紫、debunk 干预前、v3 孤边" width="760"><br>
@@ -115,7 +115,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 | [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 12 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v16.mp4` | 主视频（60s）：v2 链路扩散→王邮差记忆面板→饱和全景→v3 停滞对照→hint0s2 编造风暴 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
-| `docs/figures/` | 9 张程序化生成证据图 |
+| `docs/figures/` | 15 张程序化生成证据图（fig1–fig14 + 邻接矩阵） |
 | `docs/` | 实验报告、方法学、设计与调研文档（6 份） |
 
 ## 仓库结构

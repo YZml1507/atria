@@ -4,6 +4,8 @@
 
 **A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded ten of them with `currently` hooks about an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
+> **English abstract.** We ran 12 controlled simulations (231 simulated days, ~16k LLM-generated events) in a 25-agent town to study how information propagates. Findings: (1) anchored rumors saturate the whole town within 14 days while fragment survival is governed by wording certainty; (2) a bare prompt hint with zero factual anchors is enough to make the town *collectively fabricate* and spread a full story — "guidance seeds, not facts"; (3) unseeded towns do invent rumors but none saturate (4/19/9 of 25); (4) a fabricated rumor only spreads into an empty information niche — it is crowded out 25/25 vs 2/25 by an anchored competitor; (5) a post-saturation official debunk halves mentioning activity but erases nothing from memory. All raw runs, replay hall, and figure pipelines are in this repo.
+
 <div align="center">
 
 **[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v16.mp4)** (60s) · **[📄 实验报告](docs/REPORT.md)**

@@ -18,6 +18,16 @@ RUNS = {
                  markers=["远客","新来的","新来","南边来","本县人","外乡","那户人家","生面孔"]),
     "v3s2": dict(dir=os.path.join(REPO, "run_v3s2"),                days=35, label="v3 零注入·种子2",
                  markers=["远客","新来的","新来","南边来","本县人","外乡","那户人家","生面孔"]),
+    "v3s3": dict(dir=os.path.join(REPO, "run_v3s3"),                days=35, label="v3 零注入·种子3",
+                 markers=["婚事","聘","亲事","嫁","迎亲","媒"]),
+    "hint0g": dict(dir=os.path.join(REPO, "run_hint0g"),            days=14, label="v4 零锚+引·银元",
+                 markers=["银元","山道","坛子","挖"]),
+    "multi": dict(dir=os.path.join(REPO, "run_multi"),              days=14, label="multi 双传闻并行",
+                 markers=["包裹","错领","扳指","邮局","纸箱","旧物"]),
+    "debunk": dict(dir=os.path.join(REPO, "run_debunk"),            days=14, label="debunk 第7天辟谣",
+                 markers=["包裹","错领","扳指","邮局","纸箱","旧物"]),
+    "v2s2": dict(dir=os.path.join(REPO, "run_v2s2"),                days=14, label="v2 有锚+引·种子2",
+                 markers=["错领","包裹","扳指","旧物","纸箱","邮局"]),
 }
 sys.path.insert(0, REPO)
 from atria_world import PLACES, HOMES_SOUTH, ROADS, GRID_W, GRID_H

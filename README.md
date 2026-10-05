@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="十二轮 run 的知情人数曲线：六格饱和 vs 零注入三种子均未饱和" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="2×2 四格+泛化十轮 run 的知情人数曲线：注入/引导六轮饱和 vs 零注入三种子均未饱和" width="760">
 </p>
 
 ---
@@ -42,7 +42,7 @@
 **刺激泛化验证**：把传闻客体换成"镇外山道挖出一坛银元"重跑同格条件（hint0g，14 天），结果 24/25 知情、72 条转述边，全镇照样编造出完整故事，**编造不依赖特定刺激内容**。唯一未达标的张石匠只留下"都传遍了，就你闷在石场里"这类元指涉记忆：他听见了传闻的存在，却从未被告知内容。
 
 <p align="center">
-  <img src="docs/figures/fig9_hint0_fabrication.png" alt="hint0 编造词逐日频次：从无到有，第 6 天起每天40+次" width="640">
+  <img src="docs/figures/fig9_hint0_fabrication.png" alt="hint0 编造词逐日频次：从无到有，第 3 天起每天 40+ 次" width="640">
 </p>
 
 ## 五个关键发现
@@ -115,7 +115,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 | [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 12 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v16.mp4` | 主视频（60s）：v2 链路扩散→王邮差记忆面板→饱和全景→v3 停滞对照→hint0s2 编造风暴 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
-| `docs/figures/` | 15 张程序化生成证据图（fig1–fig14 + 邻接矩阵） |
+| `docs/figures/` | 12 张程序化生成证据图（fig1–fig14 + 邻接矩阵） |
 | `docs/` | 实验报告、方法学、设计与调研文档（6 份） |
 
 ## 仓库结构

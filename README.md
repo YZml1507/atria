@@ -6,7 +6,7 @@
 
 <div align="center">
 
-**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v15.mp4)** (51s) · **[📄 实验报告](docs/REPORT.md)**
+**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v16.mp4)** (60s) · **[📄 实验报告](docs/REPORT.md)**
 
 拖时间轴回放十二轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
@@ -113,7 +113,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 | 资产 | 说明 |
 |---|---|
 | [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 12 run 对照 + 传播链路叠加 + 居民记忆面板 |
-| `renders/atria_v15.mp4` | 主视频（51s）：展厅实演，v2 扩散→记忆面板→v3 停滞→hint0 编造 |
+| `renders/atria_v16.mp4` | 主视频（60s）：v2 链路扩散→王邮差记忆面板→饱和全景→v3 停滞对照→hint0s2 编造风暴 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
 | `docs/figures/` | 9 张程序化生成证据图 |
 | `docs/` | 设计方案、实验报告、调研归档（15 份） |

@@ -128,7 +128,7 @@ atria_fragments.py   三碎片传播口径锁定（程序化判定）
 atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
-hall/                可交互展厅（Canvas 等距渲染 + export_data.py）
+hall/                可交互展厅（Canvas 等距渲染 + export_data.py + make_fig*.py 图表生成）
 run_v2/  run_v2s2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/
 run_hint0/  run_hint0s2/  run_hint0g/  run_multi/  run_debunk/   十二轮完整实验数据
 docs/                报告与图   renders/  视频

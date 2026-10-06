@@ -1,23 +1,23 @@
 # Atria — 安镇：LLM 小镇中的受控信息传播实验
 
-> 25 agents · 12 轮 run · 231 模拟日 · ~16,000 条事件 · 运行期零人工干预
+> 25 agents · 27 轮 run · 483 模拟日 · ~38,000 条事件 · 运行期零人工干预
 
 **A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded ten of them with `currently` hooks about an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
-> **English abstract.** We ran 12 controlled simulations (231 simulated days, ~16k LLM-generated events) in a 25-agent town to study how information propagates. Findings: (1) anchored rumors saturate the whole town within 14 days while fragment survival is governed by wording certainty; (2) a bare prompt hint with zero factual anchors is enough to make the town *collectively fabricate* and spread a full story — "guidance seeds, not facts"; (3) unseeded towns do invent rumors but none saturate (4/19/9 of 25); (4) a fabricated rumor only spreads into an empty information niche — it is crowded out 25/25 vs 2/25 by an anchored competitor; (5) a post-saturation official debunk halves mentioning activity but erases nothing from memory. All raw runs, replay hall, and figure pipelines are in this repo.
+> **English abstract.** We ran 27 controlled simulations (483 simulated days, ~38k LLM-generated events) in a 25-agent town to study how information propagates, across a 2×2 design over *memory anchors* × *prompt guidance*, each cell replicated with n=5 seeds. Findings: (1) anchored rumors reliably saturate — all 10 anchored runs reach ≥23/25, and across all 15 injected-cell runs the ≥23/25 rate is 15/15 vs 2/5 for unseeded towns (two-sided Fisher exact p≈0.009); (2) a bare prompt hint with zero factual anchors is enough to make the town *collectively fabricate* and spread a full story (all 5 seeds ≥23/25), generalized to an unrelated stimulus (24/25) — "guidance seeds, not facts"; (3) unseeded towns do invent rumors but saturation is unreliable (5 seeds: 4/19/9/25/24, each seeding a different story); (4) a fabricated rumor spreads only into an empty information niche — crowded out 24–25/25 vs 2–9/25 by an anchored competitor (n=3); (5) a post-saturation official debunk halves mentioning activity (~14→7/day, n=3) but erases nothing from memory. All raw runs, replay hall, and figure pipelines are in this repo.
 
 <div align="center">
 
 **[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v16.mp4)** (60s) · **[📄 实验报告](docs/REPORT.md)**
 
-拖时间轴回放十二轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
+拖时间轴回放二十七轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
 **60 秒看懂本实验**：进展厅 → 点底部「📦 邮局事件」看传闻起点 → 点「🔺 饱和」跳到第 8 天 → 左上角切到「v3 零注入」看同镇 35 天停在 4/25 → 再切「v4 零锚点+有引导」看没有锚点的镇子如何集体编造出同一个包裹案。
 
 </div>
 
 <p align="center">
-  <img src="docs/figures/fig8_2x2_curves.png" alt="2×2 四格+泛化十轮 run 的知情人数曲线：注入/引导六轮饱和 vs 零注入三种子均未饱和" width="760">
+  <img src="docs/figures/fig8_2x2_curves.png" alt="2×2 四格各 5 种子的知情人数曲线：注入/引导格全谱高位 vs 零注入格 4–25 全谱方差" width="760">
 </p>
 
 ---
@@ -32,11 +32,11 @@
 
 | | 有引导句 | 无引导句 |
 |---|---|---|
-| **有锚点** | v2：**25/25**，D9/D14 饱和（n=2） | v4np：**25/25**，D8/D9 饱和（n=2） |
-| **零锚点** | hint0：**25/25**，D8/D13 饱和（n=2）＋银元泛化 24/25；**全镇集体编造** | v3：**4、19、9/25**（n=3，35 天均未饱和） |
+| **有锚点** | v2：**23–25/25**（n=5），4/5 饱和 @D8–14 | v4np：**24–25/25**（n=5），4/5 饱和 @D8–11 |
+| **零锚点** | hint0：**23–25/25**（n=5），2/5 饱和＋银元泛化 24/25；**全镇集体编造** | v3：**4–25/25**（n=5），中位 19，1/5 饱和（磨坊传闻 @D32） |
 
 <p align="center">
-  <img src="docs/figures/fig12_runs_overview.png" alt="十二轮 run 对比：注入/引导条件全体饱和，零注入三种子无一饱和" width="760">
+  <img src="docs/figures/fig12_runs_overview.png" alt="二十七轮 run 按条件汇总：点=单轮最终知情数，横杠=中位数；注入格全部≥23 vs 零注入 4–25 全谱" width="760">
 </p>
 
 **引导即播种**：在零锚点 + 引导句条件下，包裹从未存在过，但居民顺着引导语"回忆"出完整的包裹案：查签收底单、对汇款记录、造出"哪是错领，分明是手长"的归因句并被多人转引。**传闻不靠事实传播，靠问题传播。** 同一结果也重新界定了 v2 的解释空间：其 25/25 中相当部分应归因于逐日 prompt 提示，而非纯粹涌现。
@@ -61,18 +61,18 @@
 
 **② 引导句放大深度而非广度。** 关掉引导句后饱和速度几乎不变（D8/D9 vs D9/D14），但碎片转述量降至约 1/4（164/30/0 → 44/8/0）。引导不是必要条件，是扩音器。
 
-**③ 零注入会产生信息，但长不大。** v3 三个种子各自即兴虚构出不存在的传闻：s1/s2 是"镇中新来一户人家"，s3 是"周家丫头出嫁"。35 天触达 4 / 19 / 9 人、转述边 3 / 36 / 6 条（vs 注入组 72–127），三种子均未饱和：所有台词都是提问（"你听说没？"），s1 从 D9 起只剩两人重复互问。好奇心真实存在，"看起来在聊"≠"有信息在传"。
+**③ 零注入会自己造出传闻，但长不大或长得慢。** v3 五个种子各自即兴虚构出不同传闻：s1/s2 是"镇中新来一户人家"，s3 是"周家丫头出嫁"，s4 是"老磨坊磨盘下埋东西"，s5 是"张石匠进山失踪"（而他全程在镇公园，纯属虚构）。最终知情 4 / 19 / 9 / 25 / 24 人：偶有全镇饱和（s4 @D32），但分布离散、速度远低于注入格。好奇心真实存在，但自发叙事是否起飞不可预测——这正是注入条件的价值锚点。
 
-**④ 双传闻竞争：有锚者赢家通吃。** multi 轮让引导句同时提"包裹错领"（有锚）与"山道银元"（零锚、纯编造）：包裹 14 天 25/25 饱和、银元只到 2/25：这条单独跑时能传遍全镇的编造传闻，在有锚对手面前几乎绝迹。**集体编造需要一个空的信息生态位**，是"引导即播种"的边界条件。
+**④ 双传闻竞争：有锚者赢家通吃。** multi 轮让引导句同时提"包裹错领"（有锚）与"山道银元"（零锚、纯编造），三个种子结果一致：包裹 24–25/25、银元 2/9/5——这条单独跑能传遍全镇（24/25）的编造传闻，在有锚对手面前几乎绝迹。**集体编造需要一个空的信息生态位**，是"引导即播种"的边界条件。
 
-**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件，第 7 天（传闻刚 25/25 饱和后）向全镇注入镇公所公告"同名误传、包裹已取回"：提及传闻的活跃人数从公告前爬升段的 11–19 人/天降至 7–10 人/天，但归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
+**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件并在第 7 天向全镇注入镇公所公告"同名误传、包裹已取回"，三个种子一致复现：提及传闻的活跃人数从公告前 ~14 人/天降至 ~7 人/天，而对照组（v2 五种子）同期维持 ~15 人/天；归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="六轮首传树对比：v2/hint0/hint0g 密网、multi 16金vs1紫、debunk 干预前、v3 孤边" width="760"><br>
   <img src="docs/figures/fig10b_adjacency.png" alt="25×25 转述邻接矩阵：谁告诉过谁（对数热度）" width="760"><br>
-  <img src="docs/figures/fig11_edge_growth.png" alt="累计转述边数：注入组 72–127 条 vs 零注入 3 / 36 / 6 条" width="760"><br>
-  <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争：包裹(有锚)25/25 vs 银元(零锚)2/25" width="760"><br>
-  <img src="docs/figures/fig14_debunk.png" alt="辟谣干预：第 7 天公告后提及率减半但未归零" width="760"><br>
+  <img src="docs/figures/fig11_edge_growth.png" alt="累计转述边数按条件分面：注入/引导格 63–127 条 vs 零注入 3–159 条全谱" width="760"><br>
+  <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争 n=3：包裹(有锚) 24–25/25 vs 银元(零锚) 2–9/25" width="760"><br>
+  <img src="docs/figures/fig14_debunk.png" alt="辟谣干预 n=3：第 7 天公告后提及率减半但未归零，对照组维持高位" width="760"><br>
   <img src="docs/figures/fig1_spread.png" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" width="45%">
 </p>
 
@@ -96,25 +96,25 @@ python3 atria_engine.py 14 --seed 20261014 --outdir run_x --neutral-social # 关
 python3 atria_verify.py run_v2                                           # 校验数字与数据一致
 ```
 
-十二轮 run 的原始数据全部入库：`run_v2 / run_v2s2 / run_v3 / run_v3s2 / run_v3s3 / run_v4np / run_v4np2 / run_hint0 / run_hint0s2 / run_hint0g / run_multi / run_debunk`。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
+二十七轮 run 的原始数据全部入库：`run_v2*`×5 / `run_v4np*`×5 / `run_hint0*`×5 + `run_hint0g` / `run_v3*`×5 / `run_multi*`×3 / `run_debunk*`×3 / `run`（v1 噪声基线）。展厅数据由 `hall/export_data.py` 从原始事件流重新生成。
 
 ## 局限与复现边界
 
 - 本实验**不是零干预**：v2/v4 的初始记忆锚点为作者设定；"零注入"指零信息注入，非零人设注入
-- 样本量：2×2 各格 n=2、v3 n=3；multi/debunk 各 n=1，该两条结论为单次观察
-- 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字
+- 样本量：2×2 各格 n=5；multi/debunk 各 n=3、hint0g n=1——后三者为边界条件探测，结论按趋势陈述而非显著性
+- 远程 LLM 端点同种子不逐位确定，复现的是趋势不是数字（实测底噪：v1 同种子复跑 D1 事件 79 vs 78）
 - v2 的三碎片结论仅在有锚点条件下成立
 - 全部方法学细节与逐 run 数据见 `docs/REPORT.md`（统一实验报告）、`docs/METHODOLOGY.md`
 
 ## 与文献的关系
 
-Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**。最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 运行期零人工干预 × 231 天总时长。
+Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对、报道、传闻帖）。**据我们检索，"零注入条件下信息是否自发产生并传播"尚无完全同类工作**。最接近的是 arXiv:2411.03252（无预设身份→社会结构，6 人）与 Inflected Smallville（双分支对照方法学）。本项目的差异点：25 人规模 × 2×2 对照 × 每格 n=5 种子 × 运行期零人工干预 × 483 天总时长。
 
 ## 资源
 
 | 资产 | 说明 |
 |---|---|
-| [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 12 run 对照 + 传播链路叠加 + 居民记忆面板 |
+| [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 27 run 对照 + 传播链路叠加 + 居民记忆面板 |
 | `renders/atria_v16.mp4` | 主视频（60s）：v2 链路扩散→王邮差记忆面板→饱和全景→v3 停滞对照→hint0s2 编造风暴 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
 | `docs/figures/` | 12 张程序化生成证据图（fig1–fig14 + 邻接矩阵） |
@@ -131,8 +131,8 @@ atria_verify.py      数据一致性校验（所有文档数字可溯源）
 atria_video_v7.py    2D 视频渲染管线（v6 弃用保留溯源）
 narration_v6/        旁白素材（39 段 mp3 + 音轨 + timeline.json）
 hall/                可交互展厅（Canvas 等距渲染 + export_data.py + make_fig*.py 图表生成）
-run_v2/  run_v2s2/  run_v3/  run_v3s2/  run_v3s3/  run_v4np/  run_v4np2/
-run_hint0/  run_hint0s2/  run_hint0g/  run_multi/  run_debunk/   十二轮完整实验数据
+run_v2*/(×5)  run_v4np*/(×5)  run_hint0*/(×5+银元)  run_v3*/(×5)
+run_multi*/(×3)  run_debunk*/(×3)  run/(v1 基线)      二十七轮完整实验数据
 docs/                报告与图   renders/  视频
 ```
 

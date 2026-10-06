@@ -135,11 +135,12 @@
   <div>25 个由 Atria-Dawn 驱动的居民住在这座镇里：他们有作息、会串门、记得谁说过什么。我们用它做了一组 <b>2×2 受控实验</b>，只切两个变量：<b>记忆锚点</b>（10 人 currently 含"包裹错领"相关内容）× <b>引导句</b>（prompt 里"如果你记得就告诉他"）。</div>
   <table>
     <tr><th></th><th>有引导句</th><th>无引导句</th></tr>
-    <tr><th>有锚点</th><td>v2：25/25 @D9</td><td>v4：25/25 @D8/D9 (两种子)</td></tr>
-    <tr><th>零锚点</th><td class="warn">hint0：25/25 @D8/D13（n=2）；银元 24/25 @D12：全镇集体编造</td><td class="k">v3：4、19、9/25，三种子均未饱和 (35 天)</td></tr>
+    <tr><th>有锚点</th><td>v2：23–25/25（n=5），4/5 饱和 @D8–14</td><td>v4：24–25/25（n=5），4/5 饱和 @D8–11</td></tr>
+    <tr><th>零锚点</th><td class="warn">hint0：23–25/25（n=5），2/5 饱和；银元泛化 24/25：全镇集体编造</td><td class="k">v3：4–25/25（n=5），中位 19：零注入会自己造出传闻，但方差极大</td></tr>
   </table>
   <div><b>引导即播种</b>：零锚点+有引导时包裹从未存在，居民却顺着引导语"回忆"出完整包裹案并传遍全镇：传闻不靠事实传播，靠问题传播。</div>
-  <div style="color:#8b93a3;font-size:12px;margin-top:10px">玩法：左上角切换十二轮真实 run；拖底部时间轴逐日回放走位与台词气泡；"🕸 链路"叠加层显示谁把传闻告诉了谁；点任意居民看 TA 的人设、被告知链与传闻记忆流；右上角曲线是当日知情人数。另有 v1 同种子复跑作为机器噪声基线（D1 事件 79 vs 78，秩序一致）：所有数字应视为量级而非精确值。快速上手：<a href="index.html?run=v2&tour=1" style="color:#7fd17f">✨ 自动导览模式</a>。源码与数据：<a href="https://github.com/YZml1507/atria" target="_blank">github.com/YZml1507/atria</a></div>
+  <div><b>扩展实验</b>：multi 双传闻并行（n=3）有锚包裹 24–25/25 碾压零锚银元 2–9/25（集体编造需空生态位）；debunk 第 7 天公告辟谣（n=3）提及量减半但记忆不清零。</div>
+  <div style="color:#8b93a3;font-size:12px;margin-top:10px">玩法：左上角切换二十七轮真实 run；拖底部时间轴逐日回放走位与台词气泡；"🕸 链路"叠加层显示谁把传闻告诉了谁；点任意居民看 TA 的人设、被告知链与传闻记忆流；右上角曲线是当日知情人数。另有 v1 同种子复跑作为机器噪声基线（D1 事件 79 vs 78，秩序一致）：所有数字应视为量级而非精确值。快速上手：<a href="index.html?run=v2&tour=1" style="color:#7fd17f">✨ 自动导览模式</a>。源码与数据：<a href="https://github.com/YZml1507/atria" target="_blank">github.com/YZml1507/atria</a></div>
   <button class="close" id="aboutClose">进展厅 ▶</button>
 </div></div>
 <script src="hall.js"></script>

@@ -4,7 +4,7 @@
 
 **A controlled study of information spread in an LLM town.** Twenty-five agents powered by Atria-Dawn live in a small town with schedules, memories, and social life. We seeded ten of them with `currently` hooks about an invented event, then ran a 2×2 experiment over *memory anchors* × *prompt guidance* — and measured whether a rumor needs facts to spread, or merely a question.
 
-> **English abstract.** We ran 27 controlled simulations (483 simulated days, ~38k LLM-generated events) in a 25-agent town to study how information propagates, across a 2×2 design over *memory anchors* × *prompt guidance*, each cell replicated with n=5 seeds. Findings: (1) anchored rumors reliably saturate — all 10 anchored runs reach ≥23/25, and across all 15 injected-cell runs the ≥23/25 rate is 15/15 vs 2/5 for unseeded towns (two-sided Fisher exact p≈0.009); (2) a bare prompt hint with zero factual anchors is enough to make the town *collectively fabricate* and spread a full story (all 5 seeds ≥23/25), generalized to an unrelated stimulus (24/25) — "guidance seeds, not facts"; (3) unseeded towns do invent rumors but saturation is unreliable (5 seeds: 4/19/9/25/24, each seeding a different story); (4) a fabricated rumor spreads only into an empty information niche — crowded out 24–25/25 vs 2–9/25 by an anchored competitor (n=3); (5) a post-saturation official debunk halves mentioning activity (~14→7/day, n=3) but erases nothing from memory. All raw runs, replay hall, and figure pipelines are in this repo.
+> **English abstract.** We ran 27 controlled simulations (483 simulated days, ~38k LLM-generated events) in a 25-agent town to study how information propagates, across a 2×2 design over *memory anchors* × *prompt guidance*, each cell replicated with n=5 seeds. Findings: (1) anchored rumors reliably saturate — all 10 anchored runs reach ≥23/25, and across all 15 injected-cell runs the ≥23/25 rate is 15/15 vs 2/5 for unseeded towns (two-sided Fisher exact p≈0.009); (2) a bare prompt hint with zero factual anchors is enough to make the town *collectively fabricate* and spread a full story (all 5 seeds ≥23/25), generalized to an unrelated stimulus (24/25) — "guidance seeds, not facts"; (3) unseeded towns do invent rumors but saturation is unreliable (5 seeds: 4/19/9/25/24, each seeding a different story); (4) a fabricated rumor spreads only into an empty information niche — crowded out 24–25/25 vs 2–9/25 by an anchored competitor (n=3); (5) a post-saturation official debunk halves mentioning activity (~13→6/day, n=3) but erases nothing from memory. All raw runs, replay hall, and figure pipelines are in this repo.
 
 <div align="center">
 
@@ -67,7 +67,7 @@
 
 **④ 双传闻竞争：有锚者赢家通吃。** multi 轮让引导句同时提"包裹错领"（有锚）与"山道银元"（零锚、纯编造），三个种子结果一致：包裹 24–25/25、银元 2/9/5——这条单独跑能传遍全镇（24/25）的编造传闻，在有锚对手面前几乎绝迹。**集体编造需要一个空的信息生态位**，是"引导即播种"的边界条件。
 
-**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件并在第 7 天向全镇注入镇公所公告"同名误传、包裹已取回"，三个种子一致复现：提及传闻的活跃人数从公告前 ~14 人/天降至 ~7 人/天，而对照组（v2 五种子）同期维持 ~15 人/天；归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
+**⑤ 辟谣只能压制，不能清除。** debunk 轮复刻 v2 条件并在第 7 天向全镇注入镇公所公告"同名误传、包裹已取回"，三个种子一致复现：提及传闻的活跃人数从公告前 ~13 人/天降至 ~6 人/天，而对照组（v2 五种子）同期维持 ~14 人/天；归零失败：**公共信息一旦内化进个体记忆，公告只能压低表达、不能擦除内容**。
 
 <p align="center">
   <img src="docs/figures/fig10_diffusion_network.png" alt="八轮首传树对比：v2/v4/hint0/hint0g 密网、multi 金16边vs紫1边、debunk、v3s1 孤边 vs v3s4 涌现密网" width="760"><br>

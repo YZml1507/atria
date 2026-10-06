@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""fig10a: 六轮 run 首传树地理布局对比 (2x3); fig10b: v2 全量传播邻接热图"""
+"""fig10a: 八轮 run 首传树地理布局对比 (2x4); fig10b: v2 全量传播邻接热图"""
 import json, os, matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -26,15 +26,17 @@ def rumor_color(rid, text):
     return "#ffd166"              # 包裹(有锚)
 
 panels = [
-    ("v2",     "v2 有锚+引导 · 25/25@D9",    "#ffd166"),
-    ("hint0",  "hint0 零锚编造 · 25/25@D8",  "#8ecae6"),
-    ("hint0g", "hint0g 零锚·银元 · 24/25@D12","#c77dff"),
-    ("multi",  "multi 双传闻竞争",            "#ffd166"),
-    ("debunk", "debunk D7辟谣 · 25/25@D7",   "#ff8a80"),
-    ("v3",     "v3 零注入·s1 · 4/25 停滞",    "#7fd17f"),
+    ("v2",     "v2 有锚+引导 · 25/25@D8",     "#ffd166"),
+    ("v4np",   "v4 有锚·无引导 · 25/25@D8",   "#8ecae6"),
+    ("hint0",  "hint0 零锚编造 · 25/25@D8",   "#ef8354"),
+    ("hint0g", "hint0g 零锚·银元 · 24/25",    "#c77dff"),
+    ("multi",  "multi 双传闻竞争",             "#ffd166"),
+    ("debunk", "debunk D7辟谣 · 25/25@D7",    "#ff8a80"),
+    ("v3",     "v3 零注入·s1 · 4/25 停滞",     "#7fd17f"),
+    ("v3s4",   "v3 零注入·s4 · 涌现饱和@D32",  "#7fd17f"),
 ]
 
-fig, axes = plt.subplots(2, 3, figsize=(17.5, 11.6), facecolor=BG)
+fig, axes = plt.subplots(2, 4, figsize=(23, 11.6), facecolor=BG)
 for ax, (rid, title, c) in zip(axes.flat, panels):
     ax.set_facecolor(BG)
     edges = D["runs"][rid]["edges"]
@@ -65,7 +67,7 @@ leg = [Line2D([0], [0], marker="o", color="none", markerfacecolor="#ffd166", mar
        Line2D([0], [0], marker="o", color="none", markerfacecolor="#8ecae6", markersize=9, label="第4-8天知情"),
        Line2D([0], [0], marker="o", color="none", markerfacecolor="#4a5364", markersize=9, label="第9天+ / 未知情")]
 fig.legend(handles=leg, loc="lower center", ncol=3, facecolor=BG, edgecolor=GRID, labelcolor=INK, fontsize=10.5)
-fig.suptitle("首次转述链（箭头 = 谁先告诉谁；六轮 run 对比）", color=INK, fontsize=15, y=0.99)
+fig.suptitle("首次转述链（箭头 = 谁先告诉谁；八轮 run 对比）", color=INK, fontsize=15, y=0.99)
 plt.tight_layout(rect=[0, 0.05, 1, 0.96])
 plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs", "figures", "fig10_diffusion_network.png"), dpi=150, facecolor=BG)
 plt.close()

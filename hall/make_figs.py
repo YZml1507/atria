@@ -25,7 +25,7 @@ def cum_edges(R):
 GROUPS = [
     ("有锚 × 有引导 (v2)", ["v2","v2s2","v2s3","v2s4","v2s5"], "#ffd166", []),
     ("有锚 × 无引导 (v4)", ["v4np","v4np2","v4np3","v4np4","v4np5"], "#8ecae6", []),
-    ("零锚 × 有引导 (hint0)", ["hint0","hint0s2","hint0s3","hint0s4","hint0s5"], "#ef8354", [("hint0g","银元泛化")]),
+    ("零锚 × 有引导 (hint0)", ["hint0","hint0s2","hint0s3","hint0s4","hint0s5"], "#ef8354", []),
     ("零锚 × 无引导 (v3 零注入)", ["v3","v3s2","v3s3","v3s4","v3s5"], "#7fd17f", []),
 ]
 LSS = ["-","--","-.",":",(0,(3,1,1,1))]
@@ -52,7 +52,7 @@ for ax, (gname, rids, c, extra) in zip(axes.flat, GROUPS):
     ax.legend(facecolor=BG, edgecolor=GRID, labelcolor=INK, fontsize=8.5, loc="lower right", ncol=2)
 for ax in axes[1]: ax.set_xlabel("模拟日", color=INK)
 for ax in axes[:, 0]: ax.set_ylabel("知情居民数", color=INK)
-fig.suptitle("2×2 四格 × 5 种子：知情人数随时间（含银元泛化轮）", color=INK, fontsize=14, y=0.985)
+fig.suptitle("2×2 四格 × 5 种子：知情人数随时间", color=INK, fontsize=14, y=0.985)
 plt.tight_layout(rect=[0, 0, 1, 0.97])
 plt.savefig(os.path.join(FIGDIR, "fig8_2x2_curves.png"), dpi=150, facecolor=BG); plt.close()
 

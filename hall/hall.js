@@ -637,7 +637,7 @@ fetch("data.json").then(r => r.json()).then(async d => {
       if (c.sel != null) { const si = isNaN(+c.sel) ? D.agents.findIndex(a => a.name === c.sel) : +c.sel; if (si >= 0) { showAgent(si); follow = si; focusAgent(si); } }
       if (c.z != null) cam.z = Math.min(3.2, Math.max(0.5, +c.z));
       if (c.cam) camTarget = { x: c.cam[0], y: c.cam[1] };
-      if (c.center) { const [ix, iy] = iso(12.5, 12.5); camTarget = { x: (innerWidth - panelW()) / 2 - ix * cam.z, y: innerHeight * .45 - iy * cam.z }; }
+      if (c.center) { const [gx, gy] = Array.isArray(c.center) ? c.center : [12.5, 12.5]; const [ix, iy] = iso(gx, gy); camTarget = { x: (innerWidth - panelW()) / 2 - ix * cam.z, y: innerHeight * .45 - iy * cam.z }; }
       if (c.play != null) { playing = !!c.play; $("#playBtn").textContent = playing ? "⏸ 暂停" : "▶ 播放"; }
       if (c.speed) { speed = Math.min(64, Math.max(1, +c.speed)); $("#spdBtn").textContent = speed + "×"; }
       if (c.net != null) { showNet = !!c.net; $("#netBtn").style.opacity = showNet ? 1 : .45; }

@@ -8,7 +8,7 @@
 
 <div align="center">
 
-**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v17.mp4)** (60s) · **[📄 实验报告](docs/REPORT.md)**
+**[🎮 在线交互展厅](https://yzml1507.github.io/atria/hall/)** · **[🎬 导览视频](renders/atria_v18.mp4)** (80s) · **[📄 实验报告](docs/REPORT.md)**
 
 拖时间轴回放二十七轮真实运行，点开任意居民看传闻记忆流如何流进他的记忆。
 
@@ -75,7 +75,8 @@
   <img src="docs/figures/fig11_edge_growth.png" alt="累计转述边数按条件分面：注入/引导格 63–127 条 vs 零注入 3–159 条全谱" width="760"><br>
   <img src="docs/figures/fig13_dual_rumor.png" alt="双传闻竞争 n=3：包裹(有锚) 24–25/25 vs 银元(零锚) 2–9/25" width="760"><br>
   <img src="docs/figures/fig14_debunk.png" alt="辟谣干预 n=3：第 7 天公告后提及率减半但未归零，对照组维持高位" width="760"><br>
-  <img src="docs/figures/fig1_spread.png" alt="三碎片转述次数×引导条件：措辞不确定的碎片被静默丢弃" width="45%"> <img src="docs/figures/fig6_rumor_lifecycle.png" alt="零注入传闻生命周期双峰：v3s1 停滞 vs v3s4 涌现饱和" width="45%">
+  <img src="docs/figures/fig1_spread.png" alt="三碎片转述次数×引导条件：措辞不确定的碎片被静默丢弃" width="760"><br>
+  <img src="docs/figures/fig6_rumor_lifecycle.png" alt="零注入传闻生命周期双峰：v3s1 停滞 vs v3s4 涌现饱和" width="760">
 </p>
 
 ## 方法学
@@ -117,7 +118,7 @@ Smallville（Park et al., 2023）谱系实验全部注入种子信息（派对�
 | 资产 | 说明 |
 |---|---|
 | [在线展厅](https://yzml1507.github.io/atria/hall/)（[✨ 自动导览](https://yzml1507.github.io/atria/hall/index.html?run=v2&tour=1)） | 等距小镇回放 + 27 run 对照 + 传播链路叠加 + 居民记忆面板 |
-| `renders/atria_v17.mp4` | 主视频（~60s）：近景跟拍——v2 跟吴怀疑看链路扩散→安镇记忆面板→v3s4 涌现饱和→hint0s2 编造风暴→郑大妈编造记忆 |
+| `renders/atria_v18.mp4` | 主视频（~80s）：固定机位钉在赵宅门口人群，一镜到底看 v2 传闻 14 天扩散全程 |
 | `renders/` | v3–v8 历代视频（保留溯源） |
 | `docs/figures/` | 12 张程序化生成证据图（fig1–fig14 + 邻接矩阵） |
 | `docs/` | 实验报告、方法学、设计与调研文档（6 份） |
